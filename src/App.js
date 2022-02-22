@@ -47,10 +47,10 @@ function App () {
           <h1>Navakij Assurance</h1>
           <hr/>
           <img src={pictureUrl} alt="user" width="300px" height="300px" />
-          <p style={{ textAlign: 'left', marginLeft: '20%', marginRight: '20%' }}><b>id token: </b> { idToken }</p>
-          <p style={{ textAlign: 'left', marginLeft: '20%', marginRight: '20%' }}><b>display name: </b> { displayName }</p>
-          <p style={{ textAlign: 'left', marginLeft: '20%', marginRight: '20%' }}><b>status message: </b> { statusMessage }</p>
-          <p style={{ textAlign: 'left', marginLeft: '20%', marginRight: '20%' }}><b>user id: </b>{ userId }</p>
+          <p style={{ textAlign: 'left', marginLeft: '20%', marginRight: '20%', wordBreak: "break-all" }}><b>id token: </b> { idToken }</p>
+          <p style={{ textAlign: 'left', marginLeft: '20%', marginRight: '20%', wordBreak: "break-all" }}><b>display name: </b> { displayName }</p>
+          <p style={{ textAlign: 'left', marginLeft: '20%', marginRight: '20%', wordBreak: "break-all" }}><b>status message: </b> { statusMessage }</p>
+          <p style={{ textAlign: 'left', marginLeft: '20%', marginRight: '20%', wordBreak: "break-all" }}><b>user id: </b>{ userId }</p>
           <button onClick={() => logout()} style={{ width: '100%', height: '30px' }}>Logout</button>
         </div>
       </div>

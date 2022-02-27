@@ -72,10 +72,6 @@ export default function TermsAndCondition() {
       </div>
       <div className="input-button-wrapper">
         <label className="input-wrapper">
-          {/* <label class="container">
-            <input type="checkbox" />
-            Four
-          </label> */}
           <input type="checkbox" name="accept-terms-conditions" />
           <span class="checkmark"></span>
           <span className="input-label">
@@ -84,7 +80,12 @@ export default function TermsAndCondition() {
           </span>
         </label>
         <div className="button-wrapper flex">
-          <button className="btn btn-primary">ยอมรับ</button>
+          <button
+            onClick={() => navigate("/verify-identity")}
+            className="btn btn-primary"
+          >
+            ยอมรับ
+          </button>
           <button className="btn">ไม่ยอมรับ</button>
         </div>
       </div>

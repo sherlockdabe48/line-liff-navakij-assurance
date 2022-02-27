@@ -1,0 +1,39 @@
+@import 'font.scss';
+@import 'header.scss';
+@import 'terms-and-conditions.scss';
+@import 'verify-identity.scss';
+@import 'button.scss';
+@import 'custom-checkbox.scss';
+
+
+*,*::before, *::after {
+  font-family: 'supermarket', sans-serif;
+}
+
+:root {
+  --bg-light-grey: #F5F5F4;
+  --bg-grey: #C4C4C4;
+  --bg-white: #ffffff;
+  --text-grey: #969393;
+  --text-blue: #3B90FE;
+  --border-grey: #D6D7D6;
+  --navakij-navy: #022D60;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  background-color:var(--bg-white);
+  color: var(--text-grey);
+  justify-content: center;
+  align-items: center;
+}
+
+.flex {
+  display: flex !important;
+
+  &-column {
+    flex-direction: column;
+  }
+}

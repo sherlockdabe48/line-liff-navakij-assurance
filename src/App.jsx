@@ -1,5 +1,8 @@
 import "./styles/App.scss";
-// import { Navigate, Routes, Route } from "react-router-dom";
+import React from "react";
+
+// import { Navigate, Routes, Route,  } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Header from "./components/Header";
 // import TermsAndCondition from "./components/TermsAndCondition";
 // import VerifyIdentity from "./components/VerifyIdentity";
@@ -7,6 +10,14 @@ import { useEffect, useState } from "react";
 import liff from "@line/liff";
 
 function App() {
+  function useQuery() {
+    const { search } = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+  }
+
+  const query = useQuery();
+
   const [pictureUrl, setPictureUrl] = useState("");
   const [idToken, setIdToken] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -40,6 +51,10 @@ function App() {
       .catch((err) => console.error(err));
   };
 
+  // const openWindow = () => {
+  //   liff.openWindow
+  // }
+
   const logout = () => {
     liff.logout();
     window.location.reload();
@@ -58,7 +73,10 @@ function App() {
       {displayName}
       {statusMessage}
       {userId}
-      Test
+      <br />
+      The products in the query string is "{query.get("products")}"
+      <br />
+      The claims in the query string is "{query.get("claims")}"
       {/* <Routes>
         <Route path="/terms-conditions" element={<TermsAndCondition />} />
         <Route path="/verify-identity" element={<VerifyIdentity />} />

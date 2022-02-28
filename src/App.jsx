@@ -26,8 +26,8 @@ function App() {
   const [userId, setUserId] = useState("");
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const initLine = () => {
-    liff.init(
+  const initLine = async () => {
+    await liff.init(
       { liffId: "1656915926-LAjMq7EB" },
       () => {
         if (liff.isLoggedIn()) runApp();
@@ -37,19 +37,15 @@ function App() {
     );
   };
 
-  const runApp = () => {
+  const runApp = async () => {
     const idToken = liff.getIDToken();
     setIdToken(idToken);
-    liff
-      .getProfile()
-      .then((profile) => {
-        console.log(profile);
-        setDisplayName(profile.displayName);
-        setPictureUrl(profile.pictureUrl);
-        setStatusMessage(profile.statusMessage);
-        setUserId(profile.userId);
-      })
-      .catch((err) => console.error(err));
+    const profile = await liff.getProfile();
+    console.log(profile);
+    setDisplayName(profile.displayName);
+    setPictureUrl(profile.pictureUrl);
+    setStatusMessage(profile.statusMessage);
+    setUserId(profile.userId);
   };
 
   // const openWindow = () => {

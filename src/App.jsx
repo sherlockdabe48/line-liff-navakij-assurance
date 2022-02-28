@@ -148,6 +148,7 @@ function App() {
           },
         }
       );
+      liff.closeWindow();
     } catch (err) {
       return Promise.reject(err);
     }
@@ -156,7 +157,7 @@ function App() {
   useEffect(() => {
     initLine();
     if (query.get("products")) pushClaimMessageMenu();
-  }, [initLine, query]);
+  }, []);
 
   return (
     <div className="App">

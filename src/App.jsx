@@ -68,7 +68,7 @@ function App() {
       await axios.post(
         "https://cors-anywhere.herokuapp.com/https://api.line.me/v2/bot/message/push",
         {
-          to: "U39b4954db3c1a4e88fd9d14c0b210e0a",
+          to: `${userId}`,
           messages: [
             {
               type: "flex",
@@ -164,11 +164,16 @@ function App() {
       <Header />
       Version 2.0
       <button onClick={logout}>Logout</button>
-      {pictureUrl}
-      {idToken}
-      {displayName}
-      {statusMessage}
-      {userId}
+      <br />
+      <img src={pictureUrl} alt="" />
+      <br />
+      idToken: {idToken}
+      <br />
+      displayName: {displayName}
+      <br />
+      statusMessage: {statusMessage}
+      <br />
+      userId: {userId}
       <br />
       The products in the query string is "{query.get("products")}"
       <br />

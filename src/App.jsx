@@ -66,7 +66,7 @@ function App() {
       "Wy1Zsg1vsejOrMQFpybSvM/OMbYvMmyaf4iYxsHOxexJcVKs1+4uZP+jcRcJSDUkstjVtcFRyst1Hq3WyAgFiNnZ4WiVJHCJpKGG8PbmahPk+t8IUTuxvyBNkyNRIBCY6EvOaAaA6sFirOtTEIY91gdB04t89/1O/w1cDnyilFU=";
     try {
       await axios.post(
-        "https://api.line.me/v2/bot/message/push",
+        "https://cors-anywhere.herokuapp.com/https://api.line.me/v2/bot/message/push",
         {
           to: "U39b4954db3c1a4e88fd9d14c0b210e0a",
           messages: [

@@ -58,6 +58,7 @@ function App() {
       {displayName}
       {statusMessage}
       {userId}
+      Test
       {/* <Routes>
         <Route path="/terms-conditions" element={<TermsAndCondition />} />
         <Route path="/verify-identity" element={<VerifyIdentity />} />

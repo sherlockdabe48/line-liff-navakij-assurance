@@ -13,10 +13,8 @@ import liff from "@line/liff";
 function App() {
   function useQuery() {
     const { search } = useLocation();
-
     return React.useMemo(() => new URLSearchParams(search), [search]);
   }
-
   const query = useQuery();
 
   const [pictureUrl, setPictureUrl] = useState("");
@@ -28,7 +26,7 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const initLine = async () => {
     await liff.init(
-      { liffId: "1656915926-LAjMq7EB" },
+      { liffId: "1656915926-p1LyQKPo" },
       () => {
         if (liff.isLoggedIn()) runApp();
         else liff.login();
@@ -161,6 +159,9 @@ function App() {
       Version 2.0
       <button onClick={logout}>Logout</button>
       <button onClick={() => liff.closeWindow()}>Close Window</button>
+      <button onClick={() => liff.openWindow({ url: "www.google.com" })}>
+        Google.com
+      </button>
       <br />
       <img src={pictureUrl} alt="" />
       <br />

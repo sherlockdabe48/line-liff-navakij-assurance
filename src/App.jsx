@@ -153,7 +153,7 @@ function App() {
   useEffect(() => {
     initLine();
     if (query.get("products")) pushClaimMessageMenu();
-  }, []);
+  }, [query, userId]);
 
   return (
     <div className="App">

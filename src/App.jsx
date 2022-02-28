@@ -144,7 +144,7 @@ function App() {
           },
         }
       );
-      // liff.closeWindow();
+      liff.closeWindow();
     } catch (err) {
       return Promise.reject(err);
     }
@@ -160,6 +160,7 @@ function App() {
       <Header />
       Version 2.0
       <button onClick={logout}>Logout</button>
+      <button onClick={() => liff.closeWindow()}>Close Window</button>
       <br />
       <img src={pictureUrl} alt="" />
       <br />

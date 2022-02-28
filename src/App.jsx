@@ -144,7 +144,7 @@ function App() {
           },
         }
       );
-      liff.closeWindow();
+      // liff.closeWindow();
     } catch (err) {
       return Promise.reject(err);
     }

@@ -1,9 +1,8 @@
 {
   "name": "line-liff-navakij-assurance",
   "version": "0.1.0",
-  "proxy": "https://api.line.me/",
-  "homepage": "http://localhost:3000",
   "private": true,
+  "proxy": "https://api.line.me",
   "dependencies": {
     "@line/liff": "^2.18.2",
     "@material-ui/core": "^4.12.3",

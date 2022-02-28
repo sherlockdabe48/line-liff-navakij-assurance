@@ -64,7 +64,7 @@ function App() {
       await axios.post(
         "https://cors-anywhere.herokuapp.com/https://api.line.me/v2/bot/message/push",
         {
-          to: `${userId}`,
+          to: "U39b4954db3c1a4e88fd9d14c0b210e0a",
           messages: [
             {
               type: "flex",
@@ -153,7 +153,7 @@ function App() {
   useEffect(() => {
     initLine();
     if (query.get("products")) pushClaimMessageMenu();
-  }, [query, userId]);
+  }, []);
 
   return (
     <div className="App">

@@ -1,5 +1,5 @@
 import "./styles/App.scss";
-import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import TermsAndCondition from "./components/TermsAndCondition";
 import VerifyIdentity from "./components/VerifyIdentity";

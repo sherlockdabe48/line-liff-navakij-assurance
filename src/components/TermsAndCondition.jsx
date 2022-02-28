@@ -7,18 +7,17 @@ export default function TermsAndCondition() {
   const [isConsent, setIsConsent] = useState(false);
 
   const getIsConsent = () => {
-    return false;
-  };
-
-  const checkIsConsent = () => {
-    console.log(isConsent);
-    if (isConsent) navigate("/verify-identity");
+    return true;
   };
 
   useEffect(() => {
+    const checkIsConsent = () => {
+      console.log(isConsent);
+      if (isConsent) navigate("/verify-identity");
+    };
     setIsConsent(getIsConsent());
     checkIsConsent();
-  }, [isConsent]);
+  }, [isConsent, navigate]);
 
   return (
     <div className="terms-conditions">
@@ -73,7 +72,7 @@ export default function TermsAndCondition() {
       <div className="input-button-wrapper">
         <label className="input-wrapper">
           <input type="checkbox" name="accept-terms-conditions" />
-          <span class="checkmark"></span>
+          <span className="checkmark"></span>
           <span className="input-label">
             ข้าพเจ้ายอมรับข้อกำหนดและเงื่อนไขการให้บริการนี้
             กรณีไม่ยอมรับจะไม่สามารถเข้าตรวจสอบข้อมูลได้

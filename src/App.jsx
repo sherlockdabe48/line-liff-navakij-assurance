@@ -139,6 +139,7 @@ function App() {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            "Access-Control-Allow-Origin": "*",
           },
         }
       );

@@ -149,12 +149,13 @@ function App() {
 
   useEffect(() => {
     initLine();
-    // if (query.get("products")) pushClaimMessageMenu();
+    if (query.get("products")) pushClaimMessageMenu();
   }, [initLine, query]);
 
   return (
     <div className="App">
       <Header />
+      Version 2.0
       <button onClick={logout}>Logout</button>
       {pictureUrl}
       {idToken}

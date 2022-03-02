@@ -26,14 +26,14 @@ function App() {
 
   const runApp = async () => {
     await liff.init({ liffId: "1656915926-p1LyQKPo" })
-    getUserProfile()
+    // getUserProfile()
   }
 
-  async function getUserProfile() {
-    const profile = await liff.getProfile()
-    setProfile(profile)
-    console.log("profile " + profile)
-  }
+  // async function getUserProfile() {
+  //   const profile = await liff.getProfile()
+  //   setProfile(profile)
+  //   console.log("profile " + profile)
+  // }
 
   useEffect(() => {
     runApp()
@@ -42,7 +42,7 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <div>profile: {profile}</div>
+      {/* <div>profile: {profile}</div> */}
       <Routes>
         <Route path="/terms-conditions" element={<TermsAndCondition />} />
         <Route path="/verify-identity" element={<VerifyIdentity />} />

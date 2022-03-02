@@ -16,7 +16,7 @@ export default function TermsAndCondition() {
     const checkIsConsent = () => {
       if (isConsent) navigate("/verify-identity")
     }
-    setIsConsent(getIsConsent())
+    // setIsConsent(getIsConsent())
     checkIsConsent()
   }, [isConsent, navigate])
 

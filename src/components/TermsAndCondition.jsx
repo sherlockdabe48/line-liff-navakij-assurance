@@ -2,7 +2,7 @@ import axios from "axios"
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-export default function TermsAndCondition({ headers, apiPath }) {
+export default function TermsAndCondition({ apiPath }) {
   const navigate = useNavigate()
 
   const [isConsent, setIsConsent] = useState(false)
@@ -16,7 +16,7 @@ export default function TermsAndCondition({ headers, apiPath }) {
   }
 
   const getTermsConditions = async () => {
-    const { data } = await axios.get(`${apiPath}consent/getmasterconsent/`, {
+    const { data } = await axios.get(`consent/getmasterconsent/`, {
       masterConsentCode: "MC-LINEOA-001",
       system: "LINEOA",
       project: "LINEOA-001",
@@ -26,7 +26,7 @@ export default function TermsAndCondition({ headers, apiPath }) {
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await axios.get("/consent/checkisconsent", {
+      const { data } = await axios.get(`/consent/checkisconsent`, {
         masterConsentCode: "MC-LINEOA-001",
         system: "LINEOA",
         project: "LINEOA-001",

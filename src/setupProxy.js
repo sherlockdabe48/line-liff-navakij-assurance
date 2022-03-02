@@ -8,4 +8,11 @@ module.exports = app => {
       changeOrigin: true
     })
   )
+  app.use(
+    createProxyMiddleware('consent/getmasterconsent/',
+    {
+      target: 'https://uat-web.navakij.co.th/consentmanager-api-1.0.0',
+      changeOrigin: true
+    })
+  )
 }

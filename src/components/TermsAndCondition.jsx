@@ -7,18 +7,18 @@ export default function TermsAndCondition() {
 
   const [isConsent, setIsConsent] = useState(false)
 
-  // const getIsConsent = async () => {
-  //   const res = await axios.get("")
-  //   return false
-  // }
+  const getIsConsent = async () => {
+    // const res = await axios.get("")
+    return false
+  }
 
-  // useEffect(() => {
-  //   const checkIsConsent = () => {
-  //     if (isConsent) navigate("/verify-identity")
-  //   }
-  //   setIsConsent(getIsConsent())
-  //   checkIsConsent()
-  // }, [isConsent, navigate])
+  useEffect(() => {
+    const checkIsConsent = () => {
+      if (isConsent) navigate("/verify-identity")
+    }
+    setIsConsent(getIsConsent())
+    checkIsConsent()
+  }, [isConsent, navigate])
 
   return (
     <div className="terms-conditions">

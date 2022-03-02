@@ -12,13 +12,12 @@ export default function TermsAndCondition() {
     return false
   }
 
-  useEffect(() => {
-    const checkIsConsent = () => {
-      if (isConsent) navigate("/verify-identity")
-    }
-    setIsConsent(getIsConsent())
-    checkIsConsent()
-  }, [isConsent, navigate])
+  const checkIsConsent = () => {
+    if (isConsent) navigate("/verify-identity")
+  }
+
+  setIsConsent(getIsConsent())
+  checkIsConsent()
 
   return (
     <div className="terms-conditions">

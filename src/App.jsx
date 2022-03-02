@@ -35,9 +35,7 @@ function App() {
     console.log("profile " + profile)
   }
 
-  useEffect(() => {
-    runApp()
-  }, [])
+  runApp()
 
   return (
     <div className="App">

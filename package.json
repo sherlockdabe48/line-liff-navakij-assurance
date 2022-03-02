@@ -26,12 +26,6 @@
     "eject": "react-scripts eject",
     "heroku-postbuild": "npm run build"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -45,7 +39,6 @@
     ]
   },
   "devDependencies": {
-    "prettier": "2.5.1",
     "sass": "^1.49.9"
   }
 }

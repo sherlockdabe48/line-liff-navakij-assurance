@@ -5,14 +5,20 @@ module.exports = app => {
     createProxyMiddleware('/consent/checkisconsent',
     {
       target: 'https://uat-web.navakij.co.th/consentmanager-api-1.0.0',
-      changeOrigin: true
+      changeOrigin: true,
+      onProxyRes: function (proxyRes, req, res) {
+        proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+      }
     })
-  )
-  app.use(
-    createProxyMiddleware('consent/getmasterconsent/',
-    {
-      target: 'https://uat-web.navakij.co.th/consentmanager-api-1.0.0',
-      changeOrigin: true
+    )
+    app.use(
+      createProxyMiddleware('consent/getmasterconsent/',
+      {
+        target: 'https://uat-web.navakij.co.th/consentmanager-api-1.0.0',
+        changeOrigin: true,
+        onProxyRes: function (proxyRes, req, res) {
+          proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+        }
     })
   )
 }

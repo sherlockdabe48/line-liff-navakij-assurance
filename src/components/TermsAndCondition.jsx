@@ -8,11 +8,6 @@ export default function TermsAndCondition({ headers, apiPath }) {
   const [isConsent, setIsConsent] = useState(false)
   const [termsConditionsHTML, setTermsConditionsHTML] = useState("")
 
-  const getIsConsent = () => {
-    // const res = await axios.get("")
-    return false
-  }
-
   const getTermsConditions = async () => {
     const { data } = await axios.get(
       `${apiPath}consent/getmasterconsent/`,
@@ -21,7 +16,14 @@ export default function TermsAndCondition({ headers, apiPath }) {
         system: "LINEOA",
         project: "LINEOA-001",
       },
-      { headers: headers }
+      {
+        headers: {
+          CONTROLKEY:
+            "663FA29A4761FFEB89DC56944333A28296014D21F09BAF92A6F3027C99C61F2E",
+          Authorization: "Bearer 32f452ff-41fb-50cd-9b13-156e56b84880",
+          "content-Type": "application/json",
+        },
+      }
     )
     setTermsConditionsHTML(data.masterConsent?.consentBodyHtmlText)
   }
@@ -36,7 +38,14 @@ export default function TermsAndCondition({ headers, apiPath }) {
           project: "LINEOA-001",
           identityKey: "sherlock48",
         },
-        { headers: headers }
+        {
+          headers: {
+            CONTROLKEY:
+              "663FA29A4761FFEB89DC56944333A28296014D21F09BAF92A6F3027C99C61F2E",
+            Authorization: "Bearer 32f452ff-41fb-50cd-9b13-156e56b84880",
+            "content-Type": "application/json",
+          },
+        }
       )
       setIsConsent(data.isConsent)
     })()

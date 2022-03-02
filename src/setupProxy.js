@@ -1,10 +1,10 @@
-const {createProxyMiddleware } = require('http-proxy-middleware')
+const createProxyMiddleware = require('http-proxy-middleware')
 
 module.exports = app => {
   app.use(
-    createProxyMiddleware('/v2/bot/message/push',
+    createProxyMiddleware('/consent/checkisconsent',
     {
-      target: 'https://api.line.me',
+      target: 'https://uat-web.navakij.co.th/consentmanager-api-1.0.0',
       changeOrigin: true
     })
   )

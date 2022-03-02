@@ -48,7 +48,7 @@ function App() {
       <Routes>
         <Route
           path="/terms-conditions"
-          element={<TermsAndCondition apiPath={apiPath} headers={headers} />}
+          element={<TermsAndCondition apiPath={apiPath} />}
         />
         <Route path="/verify-identity" element={<VerifyIdentity />} />
         <Route path="*" element={<Navigate to="/terms-conditions" replace />} />

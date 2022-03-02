@@ -1,24 +1,24 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios"
+import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function TermsAndCondition() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [isConsent, setIsConsent] = useState(false);
+  const [isConsent, setIsConsent] = useState(false)
 
   const getIsConsent = async () => {
-    await axios.get("");
-    return true;
-  };
+    const res = await axios.get("")
+    return false
+  }
 
   useEffect(() => {
     const checkIsConsent = () => {
-      if (isConsent) navigate("/verify-identity");
-    };
-    setIsConsent(getIsConsent());
-    checkIsConsent();
-  }, [isConsent, navigate]);
+      if (isConsent) navigate("/verify-identity")
+    }
+    setIsConsent(getIsConsent())
+    checkIsConsent()
+  }, [isConsent, navigate])
 
   return (
     <div className="terms-conditions">
@@ -43,5 +43,5 @@ export default function TermsAndCondition() {
         </div>
       </div>
     </div>
-  );
+  )
 }

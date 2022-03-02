@@ -18,35 +18,31 @@ function App() {
   // const query = useQuery();
 
   // const [pictureUrl, setPictureUrl] = useState("");
-  const [idToken, setIdToken] = useState("")
+  // const [idToken, setIdToken] = useState("")
   // const [displayName, setDisplayName] = useState("");
   // const [statusMessage, setStatusMessage] = useState("");
   // const [userId, setUserId] = useState("");
   const [profile, setProfile] = useState(null)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const initLine = async () => {
+  const runApp = async () => {
     await liff.init({ liffId: "1656915926-p1LyQKPo" })
+    getUserProfile()
   }
 
-  const runApp = () => {
-    const idToken = liff.getIDToken().then(() => {
-      setIdToken(idToken)
-    })
-    liff.getProfile().then((profile) => {
-      console.log(profile)
-      setProfile(profile)
-    })
+  async function getUserProfile() {
+    const profile = await liff.getProfile()
+    setProfile(profile)
+    console.log("profile " + profile)
   }
 
   useEffect(() => {
-    initLine()
+    runApp()
   }, [])
 
   return (
     <div className="App">
       <Header />
-      {profile}
+      <div>profile: {profile}</div>
       <Routes>
         <Route path="/terms-conditions" element={<TermsAndCondition />} />
         <Route path="/verify-identity" element={<VerifyIdentity />} />

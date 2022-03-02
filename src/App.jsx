@@ -53,7 +53,7 @@ function App() {
   return (
     <div className="App">
       <Header />
-      {{ profile }}
+      {profile}
       <Routes>
         <Route path="/terms-conditions" element={<TermsAndCondition />} />
         <Route path="/verify-identity" element={<VerifyIdentity />} />

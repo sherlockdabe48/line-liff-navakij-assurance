@@ -1,0 +1,33 @@
+.loading-full-container {
+  background-color: white;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  // -webkit-transition: opacity 2s ease-out;
+  // -moz-transition: opacity 2s ease-out;
+  // -o-transition: opacity 2s ease-out;
+  // -ms-transition: opacity 2s ease-out;
+  // transition: opacity 2s ease-out;
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    max-width: 200px;
+    transform: translate(-50%, -50%);
+  }
+
+}
+
+.fade-out { 
+  animation: fadeout 2s;
+  opacity: 0;
+}
+
+@keyframes fadeout { 
+ from{opacity: 1;}
+ to {opacity: 0;}
+}

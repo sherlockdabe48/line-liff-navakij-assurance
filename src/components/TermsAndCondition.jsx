@@ -1,6 +1,7 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import LoadingFull from "./LoadingFull"
 
 export default function TermsAndCondition({ apiPath }) {
   const navigate = useNavigate()
@@ -8,6 +9,7 @@ export default function TermsAndCondition({ apiPath }) {
   const [isConsent, setIsConsent] = useState(false)
   const [termsConditionsHTML, setTermsConditionsHTML] = useState("")
   const [isCheckedInput, setIsCheckedInput] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   axios.defaults.headers = {
     CONTROLKEY:
@@ -17,6 +19,7 @@ export default function TermsAndCondition({ apiPath }) {
   }
 
   const getTermsConditions = async () => {
+    setIsLoading(true)
     const { data } = await axios.get(`consent/getmasterconsent/`, {
       masterConsentCode: "MC-LINEOA-001",
       system: "LINEOA",
@@ -31,6 +34,11 @@ export default function TermsAndCondition({ apiPath }) {
         }
       }
       setTermsConditionsHTML(createMarkup())
+    }
+    if (isLoading) {
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 1000)
     }
   }
 
@@ -54,38 +62,44 @@ export default function TermsAndCondition({ apiPath }) {
   }, [isConsent, navigate])
 
   return (
-    <div className="terms-conditions">
-      <div className="terms-conditions-container">
-        {termsConditionsHTML && (
-          <div dangerouslySetInnerHTML={termsConditionsHTML} />
-        )}
-      </div>
-      <div className="input-button-wrapper">
-        <label className="input-wrapper">
-          <input
-            type="checkbox"
-            name="accept-terms-conditions"
-            onChange={() => handleToggleInput()}
-          />
-          <span className="checkmark"></span>
-          <span className="input-label">
-            ข้าพเจ้ายอมรับข้อกำหนดและเงื่อนไขการให้บริการนี้
-            กรณีไม่ยอมรับจะไม่สามารถเข้าตรวจสอบข้อมูลได้
-          </span>
-        </label>
-        <div className="button-wrapper flex">
-          <button
-            onClick={() => navigate("/verify-identity")}
-            className={`btn btn-primary ${
-              isCheckedInput ? "" : "btn-disabled"
-            }`}
-            disabled={!isCheckedInput}
-          >
-            ยอมรับ
-          </button>
-          <button className="btn">ไม่ยอมรับ</button>
+    <>
+      {isLoading ? (
+        <LoadingFull isLoading={isLoading} />
+      ) : (
+        <div className="terms-conditions">
+          <div className="terms-conditions-container">
+            {termsConditionsHTML && (
+              <div dangerouslySetInnerHTML={termsConditionsHTML} />
+            )}
+          </div>
+          <div className="input-button-wrapper">
+            <label className="input-wrapper">
+              <input
+                type="checkbox"
+                name="accept-terms-conditions"
+                onChange={() => handleToggleInput()}
+              />
+              <span className="checkmark"></span>
+              <span className="input-label">
+                ข้าพเจ้ายอมรับข้อกำหนดและเงื่อนไขการให้บริการนี้
+                กรณีไม่ยอมรับจะไม่สามารถเข้าตรวจสอบข้อมูลได้
+              </span>
+            </label>
+            <div className="button-wrapper flex">
+              <button
+                onClick={() => navigate("/verify-identity")}
+                className={`btn btn-primary ${
+                  isCheckedInput ? "" : "btn-disabled"
+                }`}
+                disabled={!isCheckedInput}
+              >
+                ยอมรับ
+              </button>
+              <button className="btn btn-cancel">ไม่ยอมรับ</button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   )
 }

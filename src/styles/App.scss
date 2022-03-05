@@ -50,6 +50,12 @@ p {
   padding: 0;
 }
 
+input[type='text'],
+input[type='number'],
+input {
+  font-size: 16px;
+}
+
 
 
 // Alignment Classes

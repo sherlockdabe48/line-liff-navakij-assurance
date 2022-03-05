@@ -4,9 +4,15 @@
   height: 44px;
   font-size: 24px;
   font-weight: bold;
+  line-height: 48px;
 }
 
 .btn-primary {
   background-color: var(--navakij-navy);
   color: white;
+}
+
+.btn-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

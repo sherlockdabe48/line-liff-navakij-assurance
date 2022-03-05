@@ -4,6 +4,7 @@
 @import 'verify-identity.scss';
 @import 'button.scss';
 @import 'custom-checkbox.scss';
+@import 'otp-confirm-popup.scss';
 
 
 *,*::before, *::after {
@@ -20,6 +21,11 @@
   --navakij-navy: #022D60;
 }
 
+html {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
 body {
   padding: 0;
   margin: 0;
@@ -30,10 +36,58 @@ body {
   align-items: center;
 }
 
+.App {
+  width: 100%;
+}
+
+h3 {
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+// Alignment Classes
+
+.text-center {
+  text-align: center !important;
+}
+
 .flex {
   display: flex !important;
 
   &-column {
     flex-direction: column;
   }
+}
+
+.align-items-center {
+  align-items: center;
+}
+// Spacing Classes
+
+.m-t-16 {
+  margin-top: 16px !important;
+}
+
+.m-b-16 {
+  margin-bottom: 16px !important;
+}
+
+.m-l-40 {
+  margin-left: 40px !important;
+}
+
+.m-r-40 {
+  margin-right: 40px !important;
+}
+
+// Gap
+.gap-8 {
+  gap: 8px !important;
 }

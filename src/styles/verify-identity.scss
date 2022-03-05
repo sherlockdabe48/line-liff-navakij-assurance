@@ -1,5 +1,4 @@
 .verify-identity {
-  
   h3 {
     text-align: center;
     font-weight: 700;
@@ -7,6 +6,7 @@
     color: var(--navakij-navy);
   }
   
+  width: 100%;
   .verify-identity-form {
     display: flex;
     flex-direction: column;
@@ -17,8 +17,8 @@
     .form-item {
       display: flex;
       flex-direction: column;
-      width: 100%;
       gap: 2px;
+      width: 100%;
 
       .form-label {
         color: var(--navakij-navy);
@@ -30,6 +30,7 @@
         border: 1px solid var(--border-grey);
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
         color: var(--text-grey);
+        width: 100%;
       }
     }
 

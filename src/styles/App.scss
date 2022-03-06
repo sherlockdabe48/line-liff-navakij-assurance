@@ -9,6 +9,7 @@
 @import 'policy.scss';
 @import 'policy-each.scss';
 @import 'policy-main-card.scss';
+@import 'insurance-detail.scss';
 
 
 *,*::before, *::after {
@@ -58,6 +59,12 @@ input[type='text'],
 input[type='number'],
 input {
   font-size: 16px;
+}
+
+ul {
+  &.unstyle {
+    list-style: none;
+  }
 }
 
 

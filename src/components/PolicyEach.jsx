@@ -1,7 +1,26 @@
 import React from "react"
+import InsuranceDetail from "./InsuranceDetail"
 import PolicyMainCard from "./PolicyMainCard"
+import { Phone } from "@material-ui/icons"
 
 export default function PolicyEach() {
+  const insuranceDetail = {
+    ข้อมูลล่าสุด: "31/01/2565 เวลา 08.00น.",
+    ผู้เอาประกันภัย: "นายประกัน ชั้นดี",
+    เลขที่บัตรประชาชน: "888888888888",
+    ที่อยู่: "55 ถนนสาทรเหนือ แขวงสีลม เขตบางรัก กรุงเทพฯ 10500",
+    ชื่อกรมธรรม์: "รถยนต์ นวกิจจัดให้",
+    ชื่อกรมธรรม์ที่ได้รับการอนุญาตจากนายทะเบียน: "ประกันรถยนต์ส่วนบุคคล",
+    "จำนวนเบี้ยต่อปี(บาท)": "888.00",
+    ทะเบียนรถ: "นว 88",
+    จังหวัด: "กรุงเทพมหานคร",
+    ประเภทรถ: "1.2",
+    เลขตัวถัง: "888888888888",
+    "ผู้ขับขี่ 1": "สมหวัง ดังตั้งใจ",
+    "ผู้ขับขี่ 2": "ปรารถนา ที่ดี",
+    ทำประกันผ่าน: "บริษัท 724 มาร์เก็ต จำกัด",
+  }
+
   return (
     <div className="policy-each">
       <div className="policy-main-card-container">
@@ -33,17 +52,15 @@ export default function PolicyEach() {
           </div>
         </PolicyMainCard>
       </div>
-      {/* <div className="policy-sub-card-container">
-        {policyDataList.map((item, index) => {
-          return (
-            <PolicySubCard
-              policyData={item}
-              key={index}
-              navigateToEachPolicy={navigateToEachPolicy}
-            />
-          )
-        })}
-      </div> */}
+      <div className="insurance-detail-container">
+        <InsuranceDetail insuranceDetail={insuranceDetail} />
+      </div>
+      <div className="footer">
+        <div className="call-wrapper flex">
+          <Phone className="phone-icon" />
+          <span className="text">1748 กด 4</span>
+        </div>
+      </div>
     </div>
   )
 }

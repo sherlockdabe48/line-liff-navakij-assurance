@@ -9,6 +9,24 @@ export default function OTPConfirmPopup(props) {
   const [otpString, setOtpString] = useState("")
 
   function handleInputOtp(e, digitStr, index) {
+    const { maxLength, value, name } = e.target
+    const [fieldName, fieldIndex] = name.split("-")
+
+    // Check if they hit the max character length
+    if (value.length >= maxLength) {
+      // Check if it's not the last input field
+      if (parseInt(fieldIndex, 10) < 6) {
+        // Get the next input field
+        const nextSibling = document.querySelector(
+          `input[name=otp-${parseInt(fieldIndex, 10) + 1}]`
+        )
+
+        // If found, focus the next field
+        if (nextSibling !== null) {
+          nextSibling.focus()
+        }
+      }
+    }
     let currentOtpDigits = [...otpDigits]
     currentOtpDigits[index] = e.target.value
     setOtpDigits(currentOtpDigits)
@@ -39,7 +57,7 @@ export default function OTPConfirmPopup(props) {
           <div className="text-desc-wrapper">
             <p>กรุณากรอกรหัส OTP 6 หลัก</p>
             <p>
-              ที่ส่งไปยังเบอร์โทรศัพท์ {phoneNumber} (Ref: {otpRefData.otpRef})
+              ที่ส่งไปยังเบอร์โทรศัพท์ {phoneNumber} (Ref: {otpRefData.optRef})
             </p>
           </div>
           <div className="flex otp-input-wrapper">
@@ -49,6 +67,7 @@ export default function OTPConfirmPopup(props) {
                   className="one-digit-input text-center"
                   type="text"
                   key={index}
+                  name={`otp-${index + 1}`}
                   maxLength={1}
                   value={otpDigits[index]}
                   onChange={(e) => handleInputOtp(e, digitStr, index)}

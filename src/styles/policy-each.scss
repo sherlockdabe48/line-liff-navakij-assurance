@@ -1,0 +1,30 @@
+.policy-each {
+  .policy-main-card-container {
+    height: 214px;
+    padding: 20px 32px 0px 32px;
+    .detail-wrapper {
+      padding: 16px;
+
+      .name-wrapper {
+        margin-bottom: 14px;
+        .user-name {
+          font-size: 18px;
+          margin-bottom: 6px;
+        }
+        .policy-type {
+          font-size: 16px;
+        }
+      }
+
+      .policy-detail-wrapper {
+        line-height: 1.1em;
+        font-size: 14px;
+        .label-wrapper {
+          .label {
+            min-width: 160px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,8 +1,11 @@
 import axios from "axios"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import OTPConfirmPopup from "./OTPConfirmPopup"
+import { useNavigate } from "react-router-dom"
 
 export default function VerifyIdentity() {
+  const navigate = useNavigate()
+
   const [isFormValid, setIsFormValid] = useState(false)
   const [idPassport, setIdPassport] = useState("")
   const [birthDate, setBirthDate] = useState("")
@@ -13,40 +16,40 @@ export default function VerifyIdentity() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    console.log("form: ", form)
-    try {
-      // const { data } = await axios.post('https://uat-web.navakij.co.th/myinformation-api-1.0.0/api/customer/otp/request', {}, { headers })
-      const data = {
-        msgCode: "SUCCESS",
-        msgDescription: "",
-        msgContent: "",
-        data: {
-          optRef: "Brw8zh",
-          otpExpiredOnString: "2022-02-25 13:39:26",
-        },
+    setForm({
+      identityValue: idPassport,
+      dateOfBirthString: birthDate,
+      mobileNo: phoneNumber,
+    })
+
+    if (checkIsFormValid()) {
+      try {
+        console.log("POST API /customer/otp/request")
+        // const { data } = await axios.post('https://uat-web.navakij.co.th/myinformation-api-1.0.0/api/customer/otp/request', {}, { headers })
+        const data = {
+          msgCode: "SUCCESS",
+          msgDescription: "",
+          msgContent: "",
+          data: {
+            optRef: "Brw8zh",
+            otpExpiredOnString: "2022-02-25 13:39:26",
+          },
+        }
+        if (data.msgCode === "SUCCESS") {
+          setOtpRefData(data.data)
+        }
+      } catch (err) {
+        return Promise.reject(err)
       }
-      if (data.msgCode === "SUCCESS") {
-        console.log(data.data)
-        console.log(otpRefData)
-        setOtpRefData(data.data)
-        setShowOtpPopup(true)
-      }
-    } catch (err) {
-      return Promise.reject(err)
+    } else {
+      console.log("Form is not valid")
     }
   }
 
   function checkIsFormValid() {
-    if (
-      idPassport.length === 13 &&
-      birthDate.length === 10 &&
-      phoneNumber.length >= 10
-    ) {
-      setIsFormValid(true)
-    } else setIsFormValid(false)
-    // if (!idPassport.length === 13) setIsFormValid(false)
-    // else if (!birthDate) setIsFormValid(false)
-    // else if (!phoneNumber === 10) setIsFormValid(false)
+    return (
+      idPassport.length === 13 && birthDate.length === 10 && phoneNumber.length
+    )
   }
 
   function handleChange(e, type) {
@@ -59,14 +62,6 @@ export default function VerifyIdentity() {
     if (type === "phoneNumber") {
       setPhoneNumber(e.target.value)
     }
-
-    setForm({
-      identityValue: idPassport,
-      dateOfBirthString: birthDate,
-      mobileNo: phoneNumber,
-    })
-
-    checkIsFormValid()
   }
 
   function handleCloseOtpPopup() {
@@ -76,17 +71,50 @@ export default function VerifyIdentity() {
   function onSubmitOtp(otpString) {
     console.log(otpString)
     handleCloseOtpPopup()
+    if (otpString.length === 6) {
+      try {
+        // const { data } = await axios.post(
+        //   "https://uat-web.navakij.co.th/myinformation-api-1.0.0/api/customer/otp/confirm",
+        //   {
+        //     system: "LINEOA",
+        //     project: "LINEOA",
+        //     channel: "LINE",
+        //     identityKey: "ID-001",
+        //     mobileNo: phoneNumber,
+        //     optRef: otpRefData.optRef,
+        //     otp: otpString,
+        //   },
+        //   { headers: headers }
+        // )
+        console.log("POST API customer/otp/confirm")
+        console.log("Payload: ", {
+          system: "LINEOA",
+          project: "LINEOA",
+          channel: "LINE",
+          identityKey: "ID-001",
+          mobileNo: phoneNumber,
+          optRef: otpRefData.optRef,
+          otp: otpString,
+        })
+        navigate("/policy")
+        return Promise.resolve()
+      } catch (err) {
+        return Promise.reject(err)
+      }
+    }
   }
+
+  useEffect(() => {
+    console.log("form: ", form)
+    console.log("otpRefData: ", otpRefData)
+    if (otpRefData) {
+      setShowOtpPopup(true)
+    }
+  }, [form, otpRefData])
 
   return (
     <div className="verify-identity">
       <h3 className="m-t-16 m-b-16">การยืนยันตัวตน</h3>
-      {/* Valid: {isFormValid ? "Yes" : "No"} <br />
-      {idPassport.length}
-      <br />
-      {birthDate.length}
-      <br />
-      {phoneNumber.length} */}
       <form className="verify-identity-form" onSubmit={handleSubmit}>
         <div className="form-item">
           <label className="form-label" htmlFor="id-passport">
@@ -122,17 +150,16 @@ export default function VerifyIdentity() {
             className="input-item"
             type="text"
             name="phone-number"
-            maxLength={10}
             value={phoneNumber}
             onChange={(e) => handleChange(e, "phoneNumber")}
           />
         </div>
         <button
           className={`btn btn-primary verify-button ${
-            isFormValid ? "" : "btn-disabled"
+            phoneNumber && birthDate && idPassport ? "" : "btn-disabled"
           }`}
           type="submit"
-          disabled={!isFormValid}
+          disabled={!phoneNumber || !birthDate || !idPassport}
         >
           ตรวจสอบ
         </button>

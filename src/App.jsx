@@ -9,6 +9,8 @@ import TermsAndCondition from "./components/TermsAndCondition"
 import VerifyIdentity from "./components/VerifyIdentity"
 import { useEffect, useState } from "react"
 import liff from "@line/liff"
+import Policy from "./components/Policy"
+import PolicyEach from "./components/PolicyEach"
 
 function App() {
   const apiPath = "https://uat-web.navakij.co.th/consentmanager-api-1.0.0/"
@@ -51,6 +53,8 @@ function App() {
           element={<TermsAndCondition apiPath={apiPath} />}
         />
         <Route path="/verify-identity" element={<VerifyIdentity />} />
+        <Route path="/policy" element={<Policy />} />
+        <Route path="/policy/*" element={<PolicyEach />} />
         <Route path="*" element={<Navigate to="/terms-conditions" replace />} />
       </Routes>
     </div>

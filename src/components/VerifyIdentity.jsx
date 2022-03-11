@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import OTPConfirmPopup from "./OTPConfirmPopup"
 import { useNavigate } from "react-router-dom"
 
-export default function VerifyIdentity() {
+export default function VerifyIdentity({ headers }) {
   const navigate = useNavigate()
 
   const [isFormValid, setIsFormValid] = useState(false)
@@ -14,7 +14,7 @@ export default function VerifyIdentity() {
   const [showOtpPopup, setShowOtpPopup] = useState(false)
   const [otpRefData, setOtpRefData] = useState(null)
 
-  async function handleSubmit(e) {
+  async function submitCustomerIdentifying(e) {
     e.preventDefault()
     setForm({
       identityValue: idPassport,
@@ -24,19 +24,33 @@ export default function VerifyIdentity() {
 
     if (checkIsFormValid()) {
       try {
-        console.log("POST API /customer/otp/request")
-        // const { data } = await axios.post('https://uat-web.navakij.co.th/myinformation-api-1.0.0/api/customer/otp/request', {}, { headers })
-        const data = {
-          msgCode: "SUCCESS",
-          msgDescription: "",
-          msgContent: "",
-          data: {
-            optRef: "Brw8zh",
-            otpExpiredOnString: "2022-02-25 13:39:26",
+        const { data } = await axios.post(
+          "customer/identifying",
+          {
+            system: "LINEOA",
+            project: "LINEOA",
+            channel: "LINE",
+            masterConsentCode: "MC-LINEOA-001",
+            identityType: "LINE_ID",
+            identityKey: "ID-001",
+            identityValue: "X1X556315864X",
+            dateOfBirthString: "10-10-1982",
           },
-        }
-        if (data.msgCode === "SUCCESS") {
-          setOtpRefData(data.data)
+          { headers }
+        )
+        // const data = {
+        //   msgCode: "SUCCESS",
+        //   msgDescription: "",
+        //   msgContent: "",
+        //   data: {
+        //     optRef: "Brw8zh",
+        //     otpExpiredOnString: "2022-02-25 13:39:26",
+        //   },
+        // }
+        if (data.msgCode === "VALID") {
+          submitOTPRequest()
+        } else {
+          navigate("/verify-identity/no-user")
         }
       } catch (err) {
         return Promise.reject(err)
@@ -50,6 +64,29 @@ export default function VerifyIdentity() {
     return (
       idPassport.length === 13 && birthDate.length === 10 && phoneNumber.length
     )
+  }
+
+  async function submitOTPRequest() {
+    try {
+      const { data } = await axios.post(
+        "customer/otp/request",
+        {
+          system: "LINEOA",
+          project: "LINEOA",
+          channel: "LINE",
+          masterConsentCode: "MC-LINEOA-001",
+          identityType: "LINE_ID",
+          identityKey: "ID-001",
+          identityValue: "X1X556315864X",
+          dateOfBirthString: "10-10-1982",
+          mobileNo: phoneNumber,
+        },
+        { headers }
+      )
+      setOtpRefData(data.data)
+    } catch (err) {
+      return Promise.reject(err)
+    }
   }
 
   function handleChange(e, type) {
@@ -115,7 +152,10 @@ export default function VerifyIdentity() {
   return (
     <div className="verify-identity">
       <h3 className="m-t-16 m-b-16">การยืนยันตัวตน</h3>
-      <form className="verify-identity-form" onSubmit={handleSubmit}>
+      <form
+        className="verify-identity-form"
+        onSubmit={submitCustomerIdentifying}
+      >
         <div className="form-item">
           <label className="form-label" htmlFor="id-passport">
             เลขประจำตัวบัตรประชาชน / Passport*

@@ -10,6 +10,7 @@
 @import 'policy-each.scss';
 @import 'policy-main-card.scss';
 @import 'insurance-detail.scss';
+@import 'no-user.scss';
 
 
 *,*::before, *::after {
@@ -29,6 +30,10 @@
 html {
   width: 100vw;
   overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
 }
 
 body {

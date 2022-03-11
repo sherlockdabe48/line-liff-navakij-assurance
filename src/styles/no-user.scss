@@ -1,0 +1,37 @@
+.no-user {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  gap: 24px;
+  width: 100%;
+  p {
+    font-size: 22px;
+  }
+  .call-wrapper {
+    display: flex;
+    background-color: #696A6E;
+    border-radius: 10px;
+    width: 88px;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 4px;
+    margin: 10px 0;
+
+    .text {
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .phone-icon {
+      font-size: 16px;
+    }
+  }
+}

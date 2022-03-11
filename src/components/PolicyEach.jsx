@@ -56,10 +56,10 @@ export default function PolicyEach() {
         <InsuranceDetail insuranceDetail={insuranceDetail} />
       </div>
       <div className="footer">
-        <div className="call-wrapper flex">
+        <a href="tel:1748" className="call-wrapper flex">
           <Phone className="phone-icon" />
           <span className="text">1748 กด 4</span>
-        </div>
+        </a>
       </div>
     </div>
   )

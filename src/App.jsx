@@ -26,7 +26,7 @@ function App() {
   // const [statusMessage, setStatusMessage] = useState("");
   // const [userId, setUserId] = useState("");
   const [profile, setProfile] = useState(null)
-  const [isConsent, setIsConsent] = useState(false)
+  const [isConsent, setIsConsent] = useState(null)
 
   // GLOBAL CONSTANT
   axios.defaults.headers = {
@@ -45,24 +45,21 @@ function App() {
   // }
   // const query = useQuery();
 
-  useEffect(() => {
+  useEffect(async () => {
     // runApp()
     if (!authenData.CONTROLKEY) {
-      loginNavakij()
+      await loginNavakij()
     }
 
-    console.log(authenData)
-    console.log(axios.defaults.headers)
-
-    if (axios.defaults.headers.CONTROLKEY) {
-      checkIsConsent()
-    }
-    if (authenData.CONTROLKEY) {
-      checkIsConsent()
+    //  ถ้าได้ค่า CONTROLKEY ซึ่งมาจาก API login แล้ว แต่ยังไม่รู้ว่า Consent หรือยัง (null) ให้ไปเช็ก checkIsConsent()
+    if (authenData.CONTROLKEY && isConsent === null) {
+      await checkIsConsent()
     }
 
+    // ถ้า Consent แล้ว ไปหน้า /verify-identity ถ้าไม่ให้ไปหน้า /terms-condition
     if (isConsent) navigate("/verify-identity")
-  }, [authenData, axios.defaults.headers, isConsent])
+    else navigate("/terms-condition")
+  }, [authenData, isConsent])
 
   // LINE LIFF FUNCTIONS
 
@@ -102,9 +99,10 @@ function App() {
           masterConsentCode: "MC-LINEOA-001",
           system: "LINEOA",
           project: "LINEOA-001",
-          identityKey: "sherlock48",
+          identityKey: "sssssss",
         },
       })
+      console.log(data)
       setIsConsent(data.isConsent)
     } catch (err) {
       console.error(err)
@@ -118,7 +116,9 @@ function App() {
       <Routes>
         <Route
           path="/terms-conditions"
-          element={<TermsAndCondition isConsent={isConsent} />}
+          element={
+            <TermsAndCondition authenData={authenData} isConsent={isConsent} />
+          }
         />
         <Route path="/verify-identity" element={<VerifyIdentity />} />
         <Route path="/verify-identity/no-user" element={<NoUser />} />

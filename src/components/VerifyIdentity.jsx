@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import OTPConfirmPopup from "./OTPConfirmPopup"
 import { useNavigate } from "react-router-dom"
 
-export default function VerifyIdentity({ headers }) {
+export default function VerifyIdentity({ lineId }) {
   const navigate = useNavigate()
 
   const [isFormValid, setIsFormValid] = useState(false)
@@ -24,32 +24,23 @@ export default function VerifyIdentity({ headers }) {
 
     if (checkIsFormValid()) {
       try {
-        const { data } = await axios.post(
-          "customer/identifying",
-          {
-            system: "LINEOA",
-            project: "LINEOA",
-            channel: "LINE",
-            masterConsentCode: "MC-LINEOA-001",
-            identityType: "LINE_ID",
-            identityKey: "ID-001",
-            identityValue: "X1X556315864X",
-            dateOfBirthString: "10-10-1982",
-          },
-          { headers }
-        )
-        // const data = {
-        //   msgCode: "SUCCESS",
-        //   msgDescription: "",
-        //   msgContent: "",
-        //   data: {
-        //     optRef: "Brw8zh",
-        //     otpExpiredOnString: "2022-02-25 13:39:26",
-        //   },
-        // }
+        const { data } = await axios.post("/api/customer/identifying", {
+          system: "LINEOA",
+          project: "LINEOA",
+          channel: "LINE",
+          masterConsentCode: "MC-LINEOA-001",
+          identityType: "LINE_ID",
+          identityKey: lineId || "sherlock48",
+          identityValue: idPassport,
+          dateOfBirthString: birthDate,
+          // identityValue: "X1X556315864X",
+          // identityKey: "ID-001",
+          // dateOfBirthString: "10-10-1982",
+        })
+
         if (data.msgCode === "VALID") {
           submitOTPRequest()
-        } else {
+        } else if (data.msgCode === "INVALID") {
           navigate("/verify-identity/no-user")
         }
       } catch (err) {
@@ -68,21 +59,20 @@ export default function VerifyIdentity({ headers }) {
 
   async function submitOTPRequest() {
     try {
-      const { data } = await axios.post(
-        "customer/otp/request",
-        {
-          system: "LINEOA",
-          project: "LINEOA",
-          channel: "LINE",
-          masterConsentCode: "MC-LINEOA-001",
-          identityType: "LINE_ID",
-          identityKey: "ID-001",
-          identityValue: "X1X556315864X",
-          dateOfBirthString: "10-10-1982",
-          mobileNo: phoneNumber,
-        },
-        { headers }
-      )
+      const { data } = await axios.post("customer/otp/request", {
+        system: "LINEOA",
+        project: "LINEOA",
+        channel: "LINE",
+        masterConsentCode: "MC-LINEOA-001",
+        identityType: "LINE_ID",
+        identityKey: lineId || "sherlock48",
+        identityValue: idPassport,
+        dateOfBirthString: birthDate,
+        mobileNo: phoneNumber,
+        // identityKey: "ID-001",
+        // identityValue: "X1X556315864X",
+        // dateOfBirthString: "10-10-1982",
+      })
       setOtpRefData(data.data)
     } catch (err) {
       return Promise.reject(err)

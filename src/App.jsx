@@ -1,6 +1,8 @@
 import "./styles/App.scss"
 import React from "react"
 import axios from "axios"
+import { connect } from "react-redux"
+import { appendData } from "./action"
 
 import { Navigate, Routes, Route } from "react-router-dom"
 // import { useLocation } from "react-router-dom";
@@ -14,7 +16,7 @@ import PolicyEach from "./components/PolicyEach"
 import NoUser from "./components/NoUser"
 import { useNavigate } from "react-router-dom"
 
-function App() {
+function App({ appendData, userInfo, policyTypeCodeToName, birthDateStore }) {
   // STATE MANAGEMENT
   const [authenData, setAuthenData] = useState({})
   // const [headers, setHeaders] = useState({})
@@ -120,14 +122,51 @@ function App() {
             <TermsAndCondition authenData={authenData} isConsent={isConsent} />
           }
         />
-        <Route path="/verify-identity" element={<VerifyIdentity />} />
+        <Route
+          path="/verify-identity"
+          element={
+            <VerifyIdentity
+              userInfo={userInfo}
+              birthDateStore={birthDateStore}
+              appendData={appendData}
+            />
+          }
+        />
         <Route path="/verify-identity/no-user" element={<NoUser />} />
-        <Route path="/policy" element={<Policy />} />
-        <Route path="/policy/*" element={<PolicyEach />} />
+        <Route
+          path="/policy"
+          element={
+            <Policy
+              userInfo={userInfo}
+              birthDateStore={birthDateStore}
+              appendData={appendData}
+              policyTypeCodeToName={policyTypeCodeToName}
+            />
+          }
+        />
+        <Route
+          path="/policy/*"
+          element={
+            <PolicyEach
+              userInfo={userInfo}
+              policyTypeCodeToName={policyTypeCodeToName}
+            />
+          }
+        />
         <Route path="*" element={<Navigate to="/terms-conditions" replace />} />
       </Routes>
     </div>
   )
 }
 
-export default App
+const mapStateToProps = (state) => ({
+  userInfo: state.userInfo,
+  policyTypeCodeToName: state.policyTypeCodeToName,
+  birthDateStore: state.birthDateStore,
+})
+
+const mapDispatchToProps = {
+  appendData,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

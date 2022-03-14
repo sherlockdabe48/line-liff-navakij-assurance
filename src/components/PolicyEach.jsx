@@ -3,7 +3,7 @@ import InsuranceDetail from "./InsuranceDetail"
 import PolicyMainCard from "./PolicyMainCard"
 import { Phone } from "@material-ui/icons"
 
-export default function PolicyEach() {
+export default function PolicyEach({ userInfo }) {
   const insuranceDetail = {
     ข้อมูลล่าสุด: "31/01/2565 เวลา 08.00น.",
     ผู้เอาประกันภัย: "นายประกัน ชั้นดี",

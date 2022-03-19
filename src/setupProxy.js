@@ -2,7 +2,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function(app) {
   app.use(
-    '/login/token',
+    '/login/token/',
     createProxyMiddleware({
       target: 'http://localhost:4000',
       changeOrigin: true,
@@ -16,42 +16,42 @@ module.exports = function(app) {
     })
   );
   app.use(
-    '/consent/getmasterconsent',
+    '/consent/getmasterconsent/',
     createProxyMiddleware({
       target: 'http://localhost:4000',
       changeOrigin: true,
     })
   );
   app.use(
-    '/consent/saveconsentinfo',
+    '/consent/saveconsentinfo/',
     createProxyMiddleware({
       target: 'http://localhost:4000',
       changeOrigin: true,
     })
   );
   app.use(
-    '/api/customer/identifying',
+    '/api/customer/identifying/',
     createProxyMiddleware({
       target: 'http://localhost:4000',
       changeOrigin: true,
     })
   );
   app.use(
-    '/api/customer/otp/request',
+    '/api/customer/otp/request/',
     createProxyMiddleware({
       target: 'http://localhost:4000',
       changeOrigin: true,
     })
   );
   app.use(
-    '/api/customer/otp/confirm',
+    '/api/customer/otp/confirm/',
     createProxyMiddleware({
       target: 'http://localhost:4000',
       changeOrigin: true,
     })
   );
   app.use(
-    '/api/mypolicy/list',
+    '/api/mypolicy/list/',
     createProxyMiddleware({
       target: 'http://localhost:4000',
       changeOrigin: true,

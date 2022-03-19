@@ -53,7 +53,7 @@ export default function PolicySubCard({
           <div className="flex">
             <div className="label">ประเภท</div>
             <div className="value">
-              ประกัน{policyTypeCodeToName[policyData.pol_type]}
+              {policyTypeCodeToName[policyData.pol_type]}
             </div>
           </div>
           <div className="flex">
@@ -122,9 +122,7 @@ export default function PolicySubCard({
         <img
           src="../next-icon.png"
           alt="next"
-          onClick={() =>
-            navigateToEachPolicy(policyTypeCodeToName[policyData.pol_type])
-          }
+          onClick={() => navigateToEachPolicy(policyData.pol_type)}
         />
       </div>
     </div>

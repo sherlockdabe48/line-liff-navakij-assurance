@@ -7,14 +7,22 @@ const INITIAL_STATE = {
   },
   birthDateStore: '-',
   policyTypeCodeToName: {
-    "MC": "รถยนต์ภาคบังคับ",
-    "MV": "รถยนต์ภาคสมัครใจ",
-    "PA": "อุบัติเหตุ",
-    "FI": "ทรัพย์สิน",
-    "AH": "สุขภาพ",
-    "TA": "เดินทาง",
-    "MI": "อื่น ๆ",
+    "MC": "ประกันรถยนต์ภาคบังคับ",
+    "MV": "ประกันรถยนต์ภาคสมัครใจ",
+    "PA": "ประกันอุบัติเหตุ",
+    "FI": "ประกันทรัพย์สิน",
+    "AH": "ประกันสุขภาพ",
+    "TA": "ประกันเดินทาง",
+    "MI": "ประกันอื่น ๆ",
+  },
+  policyDataListStore: [],
+  policyStatusCodeToName: {
+    "A": 'Active', 
+    "C": 'Cancel',
+    "E": 'Expire',
+    "W": 'อยู่ในระยะผ่อนผันการจ่ายเบี้ยประกัน'
   }
+  
 }
 
 export default (state = INITIAL_STATE, action={}) => {

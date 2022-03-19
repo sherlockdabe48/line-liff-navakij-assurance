@@ -179,6 +179,7 @@ export default function VerifyIdentity({
           <input
             className="input-item"
             type="text"
+            pattern="\d*"
             name="phone-number"
             value={phoneNumber}
             onChange={(e) => handleChange(e, "phoneNumber")}
@@ -193,17 +194,27 @@ export default function VerifyIdentity({
         >
           ตรวจสอบ
         </button>
+        <button
+          onClick={() => {
+            setShowOtpPopup(true)
+          }}
+        >
+          OpenPopup
+        </button>
       </form>
-      {otpRefData?.optRef
-        ? showOtpPopup && (
-            <OTPConfirmPopup
-              phoneNumber={phoneNumber}
-              otpRefData={otpRefData}
-              handleClose={handleCloseOtpPopup}
-              onSubmitOtp={onSubmitOtp}
-            />
-          )
-        : showOtpPopup && "Loading..."}
+      {/* {otpRefData?.optRef
+        ? showOtpPopup && ( */}
+      {showOtpPopup && (
+        <OTPConfirmPopup
+          phoneNumber={phoneNumber}
+          otpRefData={otpRefData}
+          handleCloseOtpPopup={handleCloseOtpPopup}
+          onSubmitOtp={onSubmitOtp}
+          submitOTPRequest={submitOTPRequest}
+        />
+      )}
+      {/* //   )
+        // : showOtpPopup && "Loading..."} */}
     </div>
   )
 }

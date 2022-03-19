@@ -3,7 +3,13 @@ import { Close, Refresh } from "@material-ui/icons"
 // import RefreshIcon from "@mui/icons-material/Refresh"
 
 export default function OTPConfirmPopup(props) {
-  const { otpRefData, phoneNumber, handleClose, onSubmitOtp } = props
+  const {
+    otpRefData,
+    phoneNumber,
+    handleCloseOtpPopup,
+    onSubmitOtp,
+    submitOTPRequest,
+  } = props
 
   const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""])
   const [otpString, setOtpString] = useState("")
@@ -51,13 +57,13 @@ export default function OTPConfirmPopup(props) {
   return (
     <div className="modal-container">
       <div className="otp-confirm-popup">
-        <Close className="close-icon" onClick={handleClose} />
+        <Close className="close-icon" onClick={() => handleCloseOtpPopup()} />
         <div className="wrapper flex flex-column">
           <h3>ยืนยันรหัส OTP</h3>
           <div className="text-desc-wrapper">
             <p>กรุณากรอกรหัส OTP 6 หลัก</p>
             <p>
-              ที่ส่งไปยังเบอร์โทรศัพท์ {phoneNumber} (Ref: {otpRefData.optRef})
+              ที่ส่งไปยังเบอร์โทรศัพท์ {phoneNumber} (Ref: {otpRefData?.optRef})
             </p>
           </div>
           <div className="flex otp-input-wrapper">
@@ -66,6 +72,7 @@ export default function OTPConfirmPopup(props) {
                 <input
                   className="one-digit-input text-center"
                   type="text"
+                  pattern="\d*"
                   key={index}
                   name={`otp-${index + 1}`}
                   maxLength={1}
@@ -75,9 +82,9 @@ export default function OTPConfirmPopup(props) {
               )
             })}
           </div>
-          <div className="refresh">
+          <div className="refresh" onClick={() => submitOTPRequest()}>
             <Refresh />
-            <span>ส่งรหัส OTP ได้อีกครั้งใน 04.50 นาที</span>
+            <span>ส่งรหัส OTP ได้อีกครั้ง</span>
           </div>
           <button
             className="btn btn-primary m-l-40 m-r-40"

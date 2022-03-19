@@ -1,9 +1,15 @@
-import React from "react"
+import React, { useEffect } from "react"
 import InsuranceDetail from "./InsuranceDetail"
 import PolicyMainCard from "./PolicyMainCard"
 import { Phone } from "@material-ui/icons"
+import { useLocation } from "react-router-dom"
 
-export default function PolicyEach({ userInfo }) {
+export default function PolicyEach({
+  userInfo,
+  policyDataListStore,
+  policyTypeCodeToName,
+  policyStatusCodeToName,
+}) {
   const insuranceDetail = {
     ข้อมูลล่าสุด: "31/01/2565 เวลา 08.00น.",
     ผู้เอาประกันภัย: "นายประกัน ชั้นดี",
@@ -21,6 +27,22 @@ export default function PolicyEach({ userInfo }) {
     ทำประกันผ่าน: "บริษัท 724 มาร์เก็ต จำกัด",
   }
 
+  function useQuery() {
+    const { search } = useLocation()
+    return React.useMemo(() => new URLSearchParams(search), [search])
+  }
+  const query = useQuery()
+
+  const location = useLocation()
+  const policyType = location.pathname.split("/policy/")[1]
+  const currentPolicyData = policyDataListStore.find(
+    (obj) => obj.pol_type === policyType
+  )
+
+  useEffect(() => {
+    console.log(currentPolicyData)
+  }, [])
+
   return (
     <div className="policy-each">
       <div className="policy-main-card-container">
@@ -28,24 +50,30 @@ export default function PolicyEach({ userInfo }) {
           <div className="detail-wrapper flex-column">
             <div className="name-wrapper">
               <p className="user-name">
-                <strong>นายประกัน ชั้นดี</strong>
+                <strong>
+                  {userInfo.firstName} {userInfo.lastName}
+                </strong>
               </p>
-              <p className="policy-type">ประกันทรัพย์สิน</p>
+              <p className="policy-type">
+                {policyTypeCodeToName[currentPolicyData?.pol_type]}
+              </p>
             </div>
             <div className="policy-detail-wrapper">
               <div className="flex label-wrapper policy-number">
                 <label className="label">เลขกรมธรรม์/ เลขหน้าบัตร</label>
-                <span>H04BNN002</span>
+                <span>{currentPolicyData.pol_id}</span>
               </div>
               <div className="flex label-wrapper policy-number">
                 <label className="label">สถานะ</label>
-                <span>มีความคุ้มครอง</span>
+                <span>
+                  {policyStatusCodeToName[currentPolicyData.pol_status_active]}
+                </span>
               </div>
               <div className="flex label-wrapper policy-number">
                 <label className="label">ระยะเวลาคุ้มครอง</label>
                 <div>
-                  <p>เริ่ม 31/12/2021</p>
-                  <p>สิ้นสุด 31/12/2022</p>
+                  <p>เริ่ม {currentPolicyData.pol_start_date.split(" ")[0]}</p>
+                  <p>สิ้นสุด {currentPolicyData.pol_end_date.split(" ")[0]}</p>
                 </div>
               </div>
             </div>
@@ -53,7 +81,7 @@ export default function PolicyEach({ userInfo }) {
         </PolicyMainCard>
       </div>
       <div className="insurance-detail-container">
-        <InsuranceDetail insuranceDetail={insuranceDetail} />
+        <InsuranceDetail currentPolicyData={currentPolicyData} />
       </div>
       <div className="footer">
         <a href="tel:1748" className="call-wrapper flex">

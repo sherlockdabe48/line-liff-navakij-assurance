@@ -9,6 +9,7 @@ export default function Policy({
   birthDateStore,
   appendData,
   policyTypeCodeToName,
+  policyDataListStore,
 }) {
   // STATES
   const [policyDataList, setPolicyDataList] = useState([])
@@ -19,17 +20,28 @@ export default function Policy({
 
   useEffect(async () => {
     await getPolicyData()
-    appendData({
-      userInfo: {
-        ...userInfo,
-        firstName: policyDataList[0]?.cust_first_name,
-        lastName: policyDataList[0]?.cust_last_name,
-        id: policyDataList[0]?.cust_nat_id,
-        birthDate: birthDateStore,
-      },
-    })
+    if (policyDataList[0]?.cust_first_name) {
+      appendData({
+        userInfo: {
+          ...userInfo,
+          firstName: policyDataList[0]?.cust_first_name,
+          lastName: policyDataList[0]?.cust_last_name,
+          id: policyDataList[0]?.cust_nat_id,
+          birthDate: birthDateStore,
+        },
+      })
+    } else {
+      console.log(policyDataList[0]?.cust_first_name)
+    }
+
     console.log(userInfo)
-  }, [userInfo.firstName, userInfo.lastName, userInfo.id, userInfo.birthDate])
+  }, [
+    policyDataList[0]?.cust_first_name,
+    userInfo.firstName,
+    userInfo.lastName,
+    userInfo.id,
+    userInfo.birthDate,
+  ])
 
   // FUNCTIONS
   function navigateToEachPolicy(policyType) {
@@ -45,50 +57,9 @@ export default function Policy({
     })
     if (data.msgCode === "SUCCESS") {
       setPolicyDataList(data.data)
+      appendData({ policyDataListStore: [...data.data] })
     }
   }
-  // const policyDataList = [
-  //   {
-  //     ประเภท: "ประกันรถยนต์",
-  //     ชื่อผู้เอาประกัน: "นายประกัน ชั้นดี",
-  //     ทะเบียนรถ: "2กข 1234",
-  //     เลขกรมธรรม์: "H04BN002",
-  //     เริ่มต้นวันที่: "31/12/2021",
-  //     สิ้นสุดวันที่: "31/12/2022",
-  //   },
-  //   {
-  //     ประเภท: "ประกันสุขภาพ",
-  //     ชื่อผู้เอาประกัน: "นายประกัน ชั้นดี",
-  //     ผลิตภัณฑ์: "ประกันมะเร็ง",
-  //     เลขกรมธรรม์: "2022540/4392",
-  //     เริ่มต้นวันที่: "31/12/2021",
-  //     สิ้นสุดวันที่: "31/12/2022",
-  //   },
-  //   {
-  //     ประเภท: "ประกันทรัพย์สิน",
-  //     ชื่อผู้เอาประกัน: "นายประกัน ชั้นดี",
-  //     ผลิตภัณฑ์: "ประกันที่อยู่อาศัย",
-  //     เลขกรมธรรม์: "2022540/4392",
-  //     เริ่มต้นวันที่: "31/12/2021",
-  //     สิ้นสุดวันที่: "31/12/2022",
-  //   },
-  //   {
-  //     ประเภท: "ประกันเดินทาง",
-  //     ชื่อผู้เอาประกัน: "นายประกัน ชั้นดี",
-  //     ผลิตภัณฑ์: "ประกันที่อยู่อาศัย",
-  //     เลขกรมธรรม์: "2022540/4392",
-  //     เริ่มต้นวันที่: "31/12/2021",
-  //     สิ้นสุดวันที่: "31/12/2022",
-  //   },
-  //   {
-  //     ประเภท: "ประกันอุบัติเหตุ",
-  //     ชื่อผู้เอาประกัน: "นายประกัน ชั้นดี",
-  //     ผลิตภัณฑ์: "ประกันที่อยู่อาศัย",
-  //     เลขกรมธรรม์: "2022540/4392",
-  //     เริ่มต้นวันที่: "31/12/2021",
-  //     สิ้นสุดวันที่: "31/12/2022",
-  //   },
-  // ]
 
   return (
     <div className="policy">

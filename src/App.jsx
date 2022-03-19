@@ -5,7 +5,6 @@ import { connect } from "react-redux"
 import { appendData } from "./action"
 
 import { Navigate, Routes, Route } from "react-router-dom"
-// import { useLocation } from "react-router-dom";
 import Header from "./components/Header"
 import TermsAndCondition from "./components/TermsAndCondition"
 import VerifyIdentity from "./components/VerifyIdentity"
@@ -16,7 +15,14 @@ import PolicyEach from "./components/PolicyEach"
 import NoUser from "./components/NoUser"
 import { useNavigate } from "react-router-dom"
 
-function App({ appendData, userInfo, policyTypeCodeToName, birthDateStore }) {
+function App({
+  appendData,
+  userInfo,
+  policyTypeCodeToName,
+  birthDateStore,
+  policyDataListStore,
+  policyStatusCodeToName,
+}) {
   // STATE MANAGEMENT
   const [authenData, setAuthenData] = useState({})
   // const [headers, setHeaders] = useState({})
@@ -40,12 +46,6 @@ function App({ appendData, userInfo, policyTypeCodeToName, birthDateStore }) {
   // HOOKS
 
   const navigate = useNavigate()
-
-  // function useQuery() {
-  //   const { search } = useLocation();
-  //   return React.useMemo(() => new URLSearchParams(search), [search]);
-  // }
-  // const query = useQuery();
 
   useEffect(async () => {
     // runApp()
@@ -101,7 +101,7 @@ function App({ appendData, userInfo, policyTypeCodeToName, birthDateStore }) {
           masterConsentCode: "MC-LINEOA-001",
           system: "LINEOA",
           project: "LINEOA-001",
-          identityKey: "sssssss",
+          identityKey: "ID-001",
         },
       })
       console.log(data)
@@ -137,6 +137,7 @@ function App({ appendData, userInfo, policyTypeCodeToName, birthDateStore }) {
           path="/policy"
           element={
             <Policy
+              policyDataListStore={policyDataListStore}
               userInfo={userInfo}
               birthDateStore={birthDateStore}
               appendData={appendData}
@@ -148,8 +149,10 @@ function App({ appendData, userInfo, policyTypeCodeToName, birthDateStore }) {
           path="/policy/*"
           element={
             <PolicyEach
+              policyDataListStore={policyDataListStore}
               userInfo={userInfo}
               policyTypeCodeToName={policyTypeCodeToName}
+              policyStatusCodeToName={policyStatusCodeToName}
             />
           }
         />
@@ -163,6 +166,8 @@ const mapStateToProps = (state) => ({
   userInfo: state.userInfo,
   policyTypeCodeToName: state.policyTypeCodeToName,
   birthDateStore: state.birthDateStore,
+  policyDataListStore: state.policyDataListStore,
+  policyStatusCodeToName: state.policyStatusCodeToName,
 })
 
 const mapDispatchToProps = {

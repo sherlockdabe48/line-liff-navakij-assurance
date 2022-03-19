@@ -32,7 +32,7 @@ const friendShip = document.getElementById('friendShip');
 
 async function main() {
   // Initialize LIFF app)
-  await liff.init({ liffId: '1656915926-NGqQJPXa' });
+  await liff.init({ liffId: '1656915926-p1LyQKPo' });
   // Try a LIFF function
 
   getUserProfile();

@@ -10,9 +10,13 @@
 
   .otp-confirm-popup {
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-width: 330px;
     max-width: 400px;
-    max-height: 270px;
+    min-height: 270px;
+    max-height: 300px;
     padding: 16px 0;
     left: 50%;
     top: 30%;

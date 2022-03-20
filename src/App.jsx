@@ -9,7 +9,7 @@ import Header from "./components/Header"
 import TermsAndCondition from "./components/TermsAndCondition"
 import VerifyIdentity from "./components/VerifyIdentity"
 import { useEffect, useState } from "react"
-import liff from "@line/liff"
+// import liff from "@line/liff"
 import Policy from "./components/Policy"
 import PolicyEach from "./components/PolicyEach"
 import NoUser from "./components/NoUser"
@@ -47,6 +47,14 @@ function App({
 
   const navigate = useNavigate()
 
+  useEffect(() => {
+    runLiff()
+  }, [])
+
+  useEffect(() => {
+    console.log(profile)
+  }, [profile])
+
   useEffect(async () => {
     // runApp()
     if (!authenData.CONTROLKEY) {
@@ -65,10 +73,36 @@ function App({
 
   // LINE LIFF FUNCTIONS
 
-  const runApp = async () => {
-    await liff.init({ liffId: "1656915926-p1LyQKPo" })
-    // getUserProfile()
+  async function runLiff() {
+    // Initialize LIFF app)
+    console.log("YO Line")
+    // await liff.init({ liffId: "1656915926-p1LyQKPo" })
+    liff
+      .init({ liffId: "1656915926-p1LyQKPo" })
+      .then(async () => {
+        if (liff.isLoggedIn()) {
+          console.log(liff.getProfile())
+          setProfile(liff.getProfile())
+        } else {
+          liff.login()
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+    getUserProfile()
   }
+
+  async function getUserProfile() {
+    const profile = await liff.getProfile()
+    console.log("profile " + profile)
+  }
+
+  // const runApp = async () => {
+  //   await liff.init({ liffId: "1656915926-p1LyQKPo" })
+  //   // getUserProfile()
+  // }
 
   // async function getUserProfile() {
   //   const profile = await liff.getProfile()

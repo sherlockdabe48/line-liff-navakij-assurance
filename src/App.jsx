@@ -59,8 +59,8 @@ function App({
     }
 
     // ถ้า Consent แล้ว ไปหน้า /verify-identity ถ้าไม่ให้ไปหน้า /terms-condition
-    if (isConsent) navigate("/verify-identity")
-    else navigate("/terms-condition")
+    // if (isConsent) navigate("/verify-identity")
+    // else navigate("/terms-condition")
   }, [authenData, isConsent])
 
   // LINE LIFF FUNCTIONS

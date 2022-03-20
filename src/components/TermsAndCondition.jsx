@@ -101,6 +101,7 @@ export default function TermsAndCondition({ isConsent, authenData }) {
         <div className="input-button-wrapper">
           <label className="input-wrapper">
             <input
+              className="checkbox-large"
               type="checkbox"
               name="accept-terms-conditions"
               onChange={() => handleToggleInput()}

@@ -6,7 +6,10 @@ export default function PolicySubCard({
   policyTypeCodeToName,
 }) {
   return (
-    <div className="policy-sub-card flex">
+    <div
+      className="policy-sub-card flex"
+      onClick={() => navigateToEachPolicy(policyData.pol_type)}
+    >
       {(policyData.pol_type === "MV" || policyData.pol_type === "MC") && (
         <div className="label-wrapper">
           <div className="flex">
@@ -119,11 +122,7 @@ export default function PolicySubCard({
       )}
 
       <div className="next-button-wrapper">
-        <img
-          src="../next-icon.png"
-          alt="next"
-          onClick={() => navigateToEachPolicy(policyData.pol_type)}
-        />
+        <img src="../next-icon.png" alt="next" />
       </div>
     </div>
   )

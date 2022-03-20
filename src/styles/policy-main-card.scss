@@ -5,16 +5,25 @@
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   height: 194px;
-  width: 326px;
+  // width: 326px;
   color: #FFFFFF;
+  min-width: 308px;
+  max-width: 380px;
 
   .logo-wrapper {
     background-color: #FFFFFF;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
+    // padding-right: ;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    // z-index: 999;
     img.logo {
+      // position: absolute;
+      margin-right: 16px;
       width: 72px;
-      margin-left: 234px;
+      // margin-left: 214px;
       margin-top: 4px;
       margin-bottom: 4px;
     }

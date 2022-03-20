@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import PolicyMainCard from "./PolicyMainCard"
 import PolicySubCard from "./PolicySubCard"
 import { useNavigate } from "react-router-dom"
+import { Phone } from "@material-ui/icons"
 import axios from "axios"
 
 export default function Policy({
@@ -77,6 +78,12 @@ export default function Policy({
             />
           )
         })}
+      </div>
+      <div className="footer">
+        <a href="tel:1748" className="call-wrapper flex">
+          <Phone className="phone-icon" />
+          <span className="text">1748 กด 4</span>
+        </a>
       </div>
     </div>
   )

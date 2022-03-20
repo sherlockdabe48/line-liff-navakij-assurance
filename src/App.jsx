@@ -33,7 +33,7 @@ function App({
   // const [displayName, setDisplayName] = useState("");
   // const [statusMessage, setStatusMessage] = useState("");
   // const [userId, setUserId] = useState("");
-  const [lineProfile, setLineProfile] = useState(null)
+  const [lineProfile, setLineProfile] = useState({})
   const [isConsent, setIsConsent] = useState(null)
 
   // GLOBAL CONSTANT
@@ -65,7 +65,7 @@ function App({
     // ถ้า Consent แล้ว ไปหน้า /verify-identity ถ้าไม่ให้ไปหน้า /terms-condition
     // if (isConsent) navigate("/verify-identity")
     // else navigate("/terms-condition")
-  }, [authenData, isConsent])
+  }, [authenData, isConsent, lineProfile])
 
   // LINE LIFF FUNCTIONS
 
@@ -132,7 +132,7 @@ function App({
   return (
     <div className="App">
       <Header />
-      {/* <div>profile: {profile}</div> */}
+      <div>lineProfile: {lineProfile?.userId}</div>
       <Routes>
         <Route
           path="/terms-conditions"

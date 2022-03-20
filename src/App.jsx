@@ -33,7 +33,7 @@ function App({
   // const [displayName, setDisplayName] = useState("");
   // const [statusMessage, setStatusMessage] = useState("");
   // const [userId, setUserId] = useState("");
-  const [profile, setProfile] = useState(null)
+  const [lineProfile, setLineProfile] = useState(null)
   const [isConsent, setIsConsent] = useState(null)
 
   // GLOBAL CONSTANT
@@ -50,10 +50,6 @@ function App({
   useEffect(() => {
     runLiff()
   }, [])
-
-  useEffect(() => {
-    console.log(profile)
-  }, [profile.userId])
 
   useEffect(async () => {
     // runApp()
@@ -83,7 +79,7 @@ function App({
 
   async function getUserProfile() {
     const profile = await liff.getProfile()
-    setProfile(profile)
+    setLineProfile(profile)
     console.log("profile " + profile)
   }
 

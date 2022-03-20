@@ -89,44 +89,44 @@ export default function TermsAndCondition({ isConsent, authenData }) {
 
   return (
     <>
-      {/* {isLoading ? (
+      {isLoading ? (
         <LoadingFull isLoading={isLoading} />
-      ) : ( */}
-      <div className="terms-conditions">
-        <div className="terms-conditions-container">
-          {termsConditionsHTML && (
-            <div dangerouslySetInnerHTML={{ __html: termsConditionsHTML }} />
-          )}
-        </div>
-        <div className="input-button-wrapper">
-          <label className="input-wrapper">
-            <input
-              className="checkbox-large"
-              type="checkbox"
-              name="accept-terms-conditions"
-              onChange={() => handleToggleInput()}
-            />
-            <span className="checkmark"></span>
-            <span className="input-label">
-              ข้าพเจ้ายอมรับข้อกำหนดและเงื่อนไขการให้บริการนี้
-              กรณีไม่ยอมรับจะไม่สามารถเข้าตรวจสอบข้อมูลได้
-            </span>
-          </label>
-          <div className="button-wrapper flex">
-            <button
-              onClick={submitSaveConsent}
-              className={`btn btn-primary ${
-                isCheckedInput ? "" : "btn-disabled"
-              }`}
-              disabled={!isCheckedInput}
-            >
-              ยอมรับ
-            </button>
-            <button className="btn btn-cancel">ไม่ยอมรับ</button>
+      ) : (
+        <div className="terms-conditions">
+          <div className="terms-conditions-container">
+            {termsConditionsHTML && (
+              <div dangerouslySetInnerHTML={{ __html: termsConditionsHTML }} />
+            )}
+          </div>
+          <div className="input-button-wrapper">
+            <label className="input-wrapper">
+              <input
+                className="checkbox-large"
+                type="checkbox"
+                name="accept-terms-conditions"
+                onChange={() => handleToggleInput()}
+              />
+              <span className="checkmark"></span>
+              <span className="input-label">
+                ข้าพเจ้ายอมรับข้อกำหนดและเงื่อนไขการให้บริการนี้
+                กรณีไม่ยอมรับจะไม่สามารถเข้าตรวจสอบข้อมูลได้
+              </span>
+            </label>
+            <div className="button-wrapper flex">
+              <button
+                onClick={submitSaveConsent}
+                className={`btn btn-primary ${
+                  isCheckedInput ? "" : "btn-disabled"
+                }`}
+                disabled={!isCheckedInput}
+              >
+                ยอมรับ
+              </button>
+              <button className="btn btn-cancel">ไม่ยอมรับ</button>
+            </div>
           </div>
         </div>
-      </div>
-      {/* )} */}
+      )}
     </>
   )
 }

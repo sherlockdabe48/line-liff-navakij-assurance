@@ -14,6 +14,7 @@ import Policy from "./components/Policy"
 import PolicyEach from "./components/PolicyEach"
 import NoUser from "./components/NoUser"
 import { useNavigate } from "react-router-dom"
+import liff from "@line/liff/dist/lib"
 
 function App({
   appendData,
@@ -25,14 +26,10 @@ function App({
 }) {
   // STATE MANAGEMENT
   const [authenData, setAuthenData] = useState({})
-  // const [headers, setHeaders] = useState({})
-  const [controlKey, setControlKey] = useState(null)
-  const [authorization, setAuthorization] = useState(null)
-  // const [pictureUrl, setPictureUrl] = useState("");
-  // const [idToken, setIdToken] = useState("")
-  // const [displayName, setDisplayName] = useState("");
-  // const [statusMessage, setStatusMessage] = useState("");
-  // const [userId, setUserId] = useState("");
+  const [pictureUrl, setPictureUrl] = useState("")
+  const [displayName, setDisplayName] = useState("")
+  const [statusMessage, setStatusMessage] = useState("")
+  const [userId, setUserId] = useState("")
   const [lineProfile, setLineProfile] = useState({})
   const [isConsent, setIsConsent] = useState(null)
 
@@ -52,7 +49,6 @@ function App({
   }, [])
 
   useEffect(async () => {
-    // runApp()
     if (!authenData.CONTROLKEY) {
       await loginNavakij()
     }
@@ -63,16 +59,26 @@ function App({
     }
 
     // ถ้า Consent แล้ว ไปหน้า /verify-identity ถ้าไม่ให้ไปหน้า /terms-condition
-    // if (isConsent) navigate("/verify-identity")
-    // else navigate("/terms-condition")
-  }, [authenData, isConsent, lineProfile])
+    if (isConsent) navigate("/verify-identity")
+    else navigate("/terms-condition")
+  }, [authenData.CONTROLKEY, isConsent])
 
   // LINE LIFF FUNCTIONS
 
   async function runLiff() {
-    // Initialize LIFF app)
     console.log("YO Line")
-    await liff.init({ liffId: "1656915926-p1LyQKPo" })
+    await liff.init({ liffId: "1656915926-p1LyQKPo" }).catch((err) => {
+      throw err
+    })
+    if (liff.isLoggedIn()) {
+      let getProfile = await liff.getProfile()
+      setPictureUrl(getProfile.pictureUrl)
+      setDisplayName(getProfile.displayName)
+      setUserId(getProfile.userId)
+      setStatusMessage(getProfile.statusMessage)
+    } else {
+      liff.login()
+    }
 
     getUserProfile()
   }
@@ -132,7 +138,7 @@ function App({
   return (
     <div className="App">
       <Header />
-      <div>lineProfile: {lineProfile?.userId}</div>
+      <h1>Hello {displayName}</h1>
       <Routes>
         <Route
           path="/terms-conditions"

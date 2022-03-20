@@ -53,7 +53,7 @@ function App({
 
   useEffect(() => {
     console.log(profile)
-  }, [profile])
+  }, [profile.userId])
 
   useEffect(async () => {
     // runApp()
@@ -76,26 +76,14 @@ function App({
   async function runLiff() {
     // Initialize LIFF app)
     console.log("YO Line")
-    // await liff.init({ liffId: "1656915926-p1LyQKPo" })
-    liff
-      .init({ liffId: "1656915926-p1LyQKPo" })
-      .then(async () => {
-        if (liff.isLoggedIn()) {
-          console.log(liff.getProfile())
-          setProfile(liff.getProfile())
-        } else {
-          liff.login()
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    await liff.init({ liffId: "1656915926-p1LyQKPo" })
 
     getUserProfile()
   }
 
   async function getUserProfile() {
     const profile = await liff.getProfile()
+    setProfile(profile)
     console.log("profile " + profile)
   }
 

@@ -46,7 +46,6 @@ function App({
   // และจะถูก Rerender อีกครั้งเมื่อค่าของตัวแปรที่อยู่ใน [] ด้านท้ายของฟังชั่นมีการเปลี่ยนแปลง หากใน [] เป็นค่าว่าง หมายถึงว่าฟังชั่นใน useEffect นั้น ๆ จะถูกเรียกแค่ครั้งดียวในครั้งแรก
   // ในกรณีนี้ runLiff() จะถูกเรียกแค่ครั้งแรกครั้งเดียวของการเข้าถึง App.jsx
   useEffect(async () => {
-    console.log(isLoggedInLine)
     await runLiff()
   }, [])
 
@@ -120,7 +119,6 @@ function App({
           identityKey: userId,
         },
       })
-      console.log(data)
       setIsConsent(data.isConsent)
     } catch (err) {
       console.error(err)

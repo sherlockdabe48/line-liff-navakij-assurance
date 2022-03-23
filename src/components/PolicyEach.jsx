@@ -10,21 +10,13 @@ export default function PolicyEach({
   policyTypeCodeToName,
   policyStatusCodeToName,
 }) {
-  function useQuery() {
-    const { search } = useLocation()
-    return React.useMemo(() => new URLSearchParams(search), [search])
-  }
-  const query = useQuery()
+  // ที่หน้านี้จะดึงข้อมูลที่ได้มาจาก STATE เพื่อมาแสดงผล
 
   const location = useLocation()
   const policyType = location.pathname.split("/policy/")[1]
   const currentPolicyData = policyDataListStore.find(
     (obj) => obj.pol_type === policyType
   )
-
-  useEffect(() => {
-    console.log(currentPolicyData)
-  }, [])
 
   return (
     <div className="policy-each">
@@ -44,19 +36,23 @@ export default function PolicyEach({
             <div className="policy-detail-wrapper">
               <div className="flex label-wrapper policy-number">
                 <label className="label">เลขกรมธรรม์/ เลขหน้าบัตร</label>
-                <span>{currentPolicyData.pol_id}</span>
+                <span className="value">{currentPolicyData.pol_id}</span>
               </div>
               <div className="flex label-wrapper policy-number">
                 <label className="label">สถานะ</label>
-                <span>
+                <span className="value">
                   {policyStatusCodeToName[currentPolicyData.pol_status_active]}
                 </span>
               </div>
               <div className="flex label-wrapper policy-number">
                 <label className="label">ระยะเวลาคุ้มครอง</label>
                 <div>
-                  <p>เริ่ม {currentPolicyData.pol_start_date.split(" ")[0]}</p>
-                  <p>สิ้นสุด {currentPolicyData.pol_end_date.split(" ")[0]}</p>
+                  <p className="value">
+                    เริ่ม {currentPolicyData.pol_start_date.split(" ")[0]}
+                  </p>
+                  <p className="value">
+                    สิ้นสุด {currentPolicyData.pol_end_date.split(" ")[0]}
+                  </p>
                 </div>
               </div>
             </div>

@@ -3,18 +3,25 @@ import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import LoadingFull from "./LoadingFull"
 import publicIp from "public-ip"
+import { MinimalSpinner } from "loading-animations-react"
 
-export default function TermsAndCondition({ isConsent, authenData }) {
-  const navigate = useNavigate()
-
+export default function TermsAndCondition({
+  authenData,
+  closeLIFF,
+  userId,
+  userOS,
+}) {
   // STATES
-
   const [termsConditionsHTML, setTermsConditionsHTML] = useState("")
   const [isCheckedInput, setIsCheckedInput] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [isLoadingSmall, setIsLoadingSmall] = useState(false)
   const [ip, setIP] = useState("")
 
   // HOOKS
+  const navigate = useNavigate()
+
+  // เมื่อเข้า Component นี้แล้วจะ get term and conditions จาก API
   useEffect(async () => {
     if (authenData.CONTROLKEY && !termsConditionsHTML) {
       await getTermsConditions()
@@ -26,6 +33,7 @@ export default function TermsAndCondition({ isConsent, authenData }) {
     }
   }, [termsConditionsHTML])
 
+  // ทำการ get user ip ก่อนตั้งแต่เข้ามาเก็บไว้เลย เพราะว่าเดี๋ยวจะนำไปใช้ตอน Post saveconsent
   useEffect(async () => {
     const userIP = await publicIp.v4()
     setIP(userIP)
@@ -39,7 +47,7 @@ export default function TermsAndCondition({ isConsent, authenData }) {
         params: {
           masterConsentCode: "MC-LINEOA-001",
           system: "LINEOA",
-          project: "LINEOA-001",
+          project: "LINEOA",
         },
       })
       setTermsConditionsHTML(data?.masterConsent?.consentBodyHtmlText)
@@ -56,10 +64,11 @@ export default function TermsAndCondition({ isConsent, authenData }) {
   }
 
   async function submitSaveConsent() {
+    setIsLoadingSmall(true)
     try {
       const { data } = await axios.post("/consent/saveconsentinfo", {
         system: "LINEOA",
-        project: "LINEOA-001",
+        project: "LINEOA",
         channel: "LINE",
         masterConsentCode: "MC-LINEOA-001",
         masterConsentVersion: 1,
@@ -68,17 +77,21 @@ export default function TermsAndCondition({ isConsent, authenData }) {
         consentFooterHtmlText: "",
         consentFullHtmlText: "",
         identityKeyType: "LINE_ID",
-        identityKey: "ID-001",
+        identityKey: userId,
         isAccept: true,
         clientIpAddress: ip,
-        clientInfo: "IPHONE15",
+        clientInfo: userOS,
       })
-      if (data.msgCode === "SUCCESS") navigate("/verify-identity")
-      else console.error("Cannot save consent")
-      navigate("/verify-identity") // Mock for dev
+      // If saveconsent is success go to verification page
+      // ถ้า Consent สำเร็จ จะไปที่หน้า "/verify-identity" ถ้าไม่สำเร็จระบบจะค้างที่หน้า loading หมุน ๆ
+      if (data.msgCode === "SUCCESS") {
+        navigate("/verify-identity")
+        setIsLoadingSmall(false)
+      } else console.error("Cannot save consent")
       return Promise.resolve(data)
     } catch (err) {
       console.error(err)
+      setIsLoadingSmall(false)
       return Promise.reject(err)
     }
   }
@@ -93,6 +106,11 @@ export default function TermsAndCondition({ isConsent, authenData }) {
         <LoadingFull isLoading={isLoading} />
       ) : (
         <div className="terms-conditions">
+          {isLoadingSmall ? (
+            <MinimalSpinner color="#3B90FE" text="" className="loading" />
+          ) : (
+            ""
+          )}
           <div className="terms-conditions-container">
             {termsConditionsHTML && (
               <div dangerouslySetInnerHTML={{ __html: termsConditionsHTML }} />
@@ -106,7 +124,6 @@ export default function TermsAndCondition({ isConsent, authenData }) {
                 name="accept-terms-conditions"
                 onChange={() => handleToggleInput()}
               />
-              <span className="checkmark"></span>
               <span className="input-label">
                 ข้าพเจ้ายอมรับข้อกำหนดและเงื่อนไขการให้บริการนี้
                 กรณีไม่ยอมรับจะไม่สามารถเข้าตรวจสอบข้อมูลได้
@@ -122,7 +139,9 @@ export default function TermsAndCondition({ isConsent, authenData }) {
               >
                 ยอมรับ
               </button>
-              <button className="btn btn-cancel">ไม่ยอมรับ</button>
+              <button className="btn btn-cancel" onClick={() => closeLIFF()}>
+                ไม่ยอมรับ
+              </button>
             </div>
           </div>
         </div>

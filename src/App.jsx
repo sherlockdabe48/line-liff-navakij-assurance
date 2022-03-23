@@ -6,10 +6,10 @@ import { appendData } from "./action"
 
 import { Navigate, Routes, Route } from "react-router-dom"
 import Header from "./components/Header"
+import Home from "./components/Home"
 import TermsAndCondition from "./components/TermsAndCondition"
 import VerifyIdentity from "./components/VerifyIdentity"
 import { useEffect, useState } from "react"
-// import liff from "@line/liff"
 import Policy from "./components/Policy"
 import PolicyEach from "./components/PolicyEach"
 import NoUser from "./components/NoUser"
@@ -27,11 +27,10 @@ function App({
   // STATE MANAGEMENT
   const [authenData, setAuthenData] = useState({})
   const [pictureUrl, setPictureUrl] = useState("")
-  const [displayName, setDisplayName] = useState("")
-  const [statusMessage, setStatusMessage] = useState("")
   const [userId, setUserId] = useState("")
-  const [lineProfile, setLineProfile] = useState({})
+  const [userOS, setUserOS] = useState("")
   const [isConsent, setIsConsent] = useState(null)
+  const [isLoggedInLine, setIsLoggedInLine] = useState(false)
 
   // GLOBAL CONSTANT
   axios.defaults.headers = {
@@ -41,67 +40,60 @@ function App({
   }
 
   // HOOKS
-
   const navigate = useNavigate()
 
-  useEffect(() => {
-    runLiff()
+  // useEffect Hook : ฟังชั่นที่อยู่ใน useEffect จะถูกเรียกในครั้งแรกที่มีการเข้าถึง Component นี้
+  // และจะถูก Rerender อีกครั้งเมื่อค่าของตัวแปรที่อยู่ใน [] ด้านท้ายของฟังชั่นมีการเปลี่ยนแปลง หากใน [] เป็นค่าว่าง หมายถึงว่าฟังชั่นใน useEffect นั้น ๆ จะถูกเรียกแค่ครั้งดียวในครั้งแรก
+  // ในกรณีนี้ runLiff() จะถูกเรียกแค่ครั้งแรกครั้งเดียวของการเข้าถึง App.jsx
+  useEffect(async () => {
+    console.log(isLoggedInLine)
+    await runLiff()
   }, [])
 
   useEffect(async () => {
-    if (!authenData.CONTROLKEY) {
-      await loginNavakij()
-    }
+    // หากได้ค่า userId มาจากการ init liff แล้วถึงจะนำ userId นี้ไปเช็ก consent ต่อไป
+    if (userId.length) {
+      if (!authenData.CONTROLKEY) {
+        await loginNavakij()
+      }
+      //  ถ้าได้ค่า CONTROLKEY ซึ่งมาจาก API login แล้ว แต่ยังไม่รู้ว่า Consent หรือยัง (null) ให้ไปเช็ก checkIsConsent()
+      if (authenData.CONTROLKEY && isConsent === null) {
+        await checkIsConsent()
+      }
 
-    //  ถ้าได้ค่า CONTROLKEY ซึ่งมาจาก API login แล้ว แต่ยังไม่รู้ว่า Consent หรือยัง (null) ให้ไปเช็ก checkIsConsent()
-    if (authenData.CONTROLKEY && isConsent === null) {
-      await checkIsConsent()
+      // ถ้า Consent แล้ว ไปหน้า /verify-identity ถ้าไม่ ให้ไปหน้า /terms-conditions
+      if (isConsent) navigate("/verify-identity")
+      else navigate("/terms-conditions")
     }
-
-    // ถ้า Consent แล้ว ไปหน้า /verify-identity ถ้าไม่ให้ไปหน้า /terms-condition
-    if (isConsent) navigate("/verify-identity")
-    else navigate("/terms-condition")
-  }, [authenData.CONTROLKEY, isConsent])
+  }, [authenData.CONTROLKEY, isConsent, userId.length])
 
   // LINE LIFF FUNCTIONS
-
+  // Function runLiff จะเป็นการยิง API ไปหา Line เพื่อ initiate ก่อนที่จะข้อใช้ข้อมูลของ Line User
   async function runLiff() {
-    console.log("YO Line")
-    await liff.init({ liffId: "1656915926-p1LyQKPo" }).catch((err) => {
+    // liffId ได้มาจาก console ของ line developer > Provider > Chanel > Liff Id
+    await liff.init({ liffId: "1656990746-QbJoG5ny" }).catch((err) => {
       throw err
     })
+    // เมื่อ User login line แล้ว จะเรียกฟังชั่น liff.getProfile() เพื่อดึงข้อมูลของผู้ใช้
     if (liff.isLoggedIn()) {
+      console.log("You already login")
       let getProfile = await liff.getProfile()
       setPictureUrl(getProfile.pictureUrl)
-      setDisplayName(getProfile.displayName)
       setUserId(getProfile.userId)
-      setStatusMessage(getProfile.statusMessage)
+
+      let getOS = liff.getOS()
+      setUserOS(getOS)
     } else {
+      console.log("You not login yet")
       liff.login()
     }
-
-    getUserProfile()
   }
 
-  async function getUserProfile() {
-    const profile = await liff.getProfile()
-    setLineProfile(profile)
-    console.log("profile " + profile)
+  function closeLIFF() {
+    liff.closeWindow()
   }
-
-  // const runApp = async () => {
-  //   await liff.init({ liffId: "1656915926-p1LyQKPo" })
-  //   // getUserProfile()
-  // }
-
-  // async function getUserProfile() {
-  //   const profile = await liff.getProfile()
-  //   setProfile(profile)
-  //   console.log("profile " + profile)
-  // }
 
   // API CALL NAVAKIJ FUNCTIONS
-
   async function loginNavakij() {
     console.log("loginNavakij")
     try {
@@ -124,8 +116,8 @@ function App({
         params: {
           masterConsentCode: "MC-LINEOA-001",
           system: "LINEOA",
-          project: "LINEOA-001",
-          identityKey: "ID-001",
+          project: "LINEOA",
+          identityKey: userId,
         },
       })
       console.log(data)
@@ -138,12 +130,17 @@ function App({
   return (
     <div className="App">
       <Header />
-      <h1>Hello {displayName}</h1>
       <Routes>
         <Route
           path="/terms-conditions"
           element={
-            <TermsAndCondition authenData={authenData} isConsent={isConsent} />
+            <TermsAndCondition
+              authenData={authenData}
+              isConsent={isConsent}
+              closeLIFF={closeLIFF}
+              userId={userId}
+              userOS={userOS}
+            />
           }
         />
         <Route
@@ -153,6 +150,7 @@ function App({
               userInfo={userInfo}
               birthDateStore={birthDateStore}
               appendData={appendData}
+              userId={userId}
             />
           }
         />
@@ -166,6 +164,7 @@ function App({
               birthDateStore={birthDateStore}
               appendData={appendData}
               policyTypeCodeToName={policyTypeCodeToName}
+              userId={userId}
             />
           }
         />
@@ -180,7 +179,7 @@ function App({
             />
           }
         />
-        <Route path="*" element={<Navigate to="/terms-conditions" replace />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </div>
   )

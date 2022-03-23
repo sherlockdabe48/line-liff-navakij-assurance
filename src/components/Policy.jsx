@@ -10,17 +10,26 @@ export default function Policy({
   birthDateStore,
   appendData,
   policyTypeCodeToName,
-  policyDataListStore,
+  userId,
 }) {
+  // เมื่อเข้ามาหน้านี้จะเรียกฟังชั่น getPolicyData() ด้วยการยิง API ไปที่ /api/mypolicy/list และทำการเห็บข้อมูลของลูกค้าลงใน userInfo ที่จะถูกเห็บลงใน STATE
+  // (ข้อมูลใน state จะอยู่ใน file ./src/reducer.js)
+  // นำข้อมูลที่ได้มาแสดงผลที่ Component PolicyMainCard.jsx หรือหมายถึงบัตรสีน้ำเงินด้านบนในหน้ากรมธรรม์
+  // และนำข้อมูลที่อยู่ใน list ของ policy มาแสดงผลที่ component PolicySubCard.jsx
+  // เมื่อทำการกดที่ PolicySubCard ระบบจะพาไปหน้าของกรมธรรม์แต่ละชนิด PolicyEach.jsx
+
   // STATES
   const [policyDataList, setPolicyDataList] = useState([])
-  const userName = `${userInfo.firstName} ${userInfo.lastName}`
 
   // HOOKS
   const navigate = useNavigate()
 
   useEffect(async () => {
     await getPolicyData()
+    if (policyDataList[0]?.pol_status_active === "C") {
+      navigate("/verify-identity/no-user")
+      return
+    }
     if (policyDataList[0]?.cust_first_name) {
       appendData({
         userInfo: {
@@ -31,11 +40,7 @@ export default function Policy({
           birthDate: birthDateStore,
         },
       })
-    } else {
-      console.log(policyDataList[0]?.cust_first_name)
     }
-
-    console.log(userInfo)
   }, [
     policyDataList[0]?.cust_first_name,
     userInfo.firstName,
@@ -54,7 +59,7 @@ export default function Policy({
       system: "LINEOA",
       project: "LINEOA",
       channel: "LINE",
-      identityKey: "ID-001",
+      identityKey: userId,
     })
     if (data.msgCode === "SUCCESS") {
       setPolicyDataList(data.data)
@@ -78,11 +83,12 @@ export default function Policy({
             />
           )
         })}
+        <div className="empty-space"></div>
       </div>
       <div className="footer">
         <a href="tel:1748" className="call-wrapper flex">
           <Phone className="phone-icon" />
-          <span className="text">1748 กด 4</span>
+          <span className="text">1748</span>
         </a>
       </div>
     </div>

@@ -27,7 +27,8 @@ export default function PolicySubCard({
           <div className="flex">
             <div className="label">ทะเบียนรถ</div>
             <div className="value">
-              {policyData?.policy?.pol_voluntary_plateno}
+              {policyData?.policy?.pol_voluntary_plateno ||
+                policyData?.policy?.pol_compulsory_plateno}
             </div>
           </div>
           <div className="flex">

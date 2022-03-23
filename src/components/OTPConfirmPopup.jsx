@@ -1,19 +1,39 @@
 import React, { useEffect, useState } from "react"
 import { Close, Refresh } from "@material-ui/icons"
-// import RefreshIcon from "@mui/icons-material/Refresh"
 
 export default function OTPConfirmPopup(props) {
   const {
     otpRefData,
     phoneNumber,
     handleCloseOtpPopup,
-    onSubmitOtp,
+    submitConfirmOTP,
     submitOTPRequest,
   } = props
 
+  // STATES
   const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""])
   const [otpString, setOtpString] = useState("")
+  const [count, setCount] = useState(30)
+  const [canClickSendOtpAgain, setCanClickSendOtpAgain] = useState(false)
 
+  // HOOKS
+  useEffect(() => {
+    if (count === 0) {
+      setCanClickSendOtpAgain(true)
+    }
+  }, [count])
+
+  // เมื่อ Popup นี้แสดงขึ้นจะถูกต้องเวลา 30 วินาทีถอยหลัง เพื่อกันไม่ให้ลูกค้ากดปุ่ม ขอรหัส OTP อีกครั้งย้ำ ๆ จะกดได้อีกครั้งก็ต่อเมื่อเวลา ครบ 30 วินาที และจะทำการขอรหัส OTP อีกครั้ง
+  useEffect(() => {
+    if (otpRefData) {
+      startTimer(30)
+    }
+    if (otpString) {
+      submitConfirmOTP(otpString)
+    }
+  }, [otpString])
+
+  // OTHER FUNCTIONS
   function handleInputOtp(e, digitStr, index) {
     const { maxLength, value, name } = e.target
     const [fieldName, fieldIndex] = name.split("-")
@@ -26,7 +46,6 @@ export default function OTPConfirmPopup(props) {
         const nextSibling = document.querySelector(
           `input[name=otp-${parseInt(fieldIndex, 10) + 1}]`
         )
-
         // If found, focus the next field
         if (nextSibling !== null) {
           nextSibling.focus()
@@ -38,9 +57,10 @@ export default function OTPConfirmPopup(props) {
     setOtpDigits(currentOtpDigits)
   }
 
+  // PREPARE OTP
   function handleSubmit() {
     if (otpDigits.includes("")) {
-      console.log("you have white space")
+      console.log("you have white space in otp input please fill all input")
       return
     }
     const stringWithComma = otpDigits.toString()
@@ -48,11 +68,28 @@ export default function OTPConfirmPopup(props) {
     setOtpString(stringNoComma)
   }
 
-  useEffect(() => {
-    if (otpString) {
-      onSubmitOtp(otpString)
-    }
-  }, [otpString])
+  // TIMER FUNCTION FOR OTP RESENDING
+  var timer
+  var startTimer = (duration) => {
+    timer = duration
+    var seconds
+    const myInterval = setInterval(function () {
+      seconds = parseInt(timer % 60, 10)
+      setCount(seconds)
+      --timer
+      if (timer < 0) {
+        timer = 0
+        clearInterval(myInterval)
+      }
+    }, 1000)
+  }
+
+  function handleRefreshOtp() {
+    submitOTPRequest()
+    setCanClickSendOtpAgain(false)
+    timer = 30
+    startTimer(timer)
+  }
 
   return (
     <div className="modal-container">
@@ -62,9 +99,8 @@ export default function OTPConfirmPopup(props) {
           <h3>ยืนยันรหัส OTP</h3>
           <div className="text-desc-wrapper">
             <p>กรุณากรอกรหัส OTP 6 หลัก</p>
-            <p>
-              ที่ส่งไปยังเบอร์โทรศัพท์ {phoneNumber} (Ref: {otpRefData?.optRef})
-            </p>
+            <p>ที่ส่งไปยังเบอร์โทรศัพท์ {phoneNumber}</p>
+            <p>(Ref: {otpRefData?.optRef})</p>
           </div>
           <div className="flex otp-input-wrapper">
             {otpDigits.map((digitStr, index) => {
@@ -82,10 +118,16 @@ export default function OTPConfirmPopup(props) {
               )
             })}
           </div>
-          <div className="refresh" onClick={() => submitOTPRequest()}>
-            <Refresh />
-            <span>ส่งรหัส OTP ได้อีกครั้ง</span>
-          </div>
+          {canClickSendOtpAgain ? (
+            <div className="refresh" onClick={() => handleRefreshOtp()}>
+              <Refresh />
+              <span>ส่งรหัส OTP อีกครั้ง</span>
+            </div>
+          ) : (
+            <div>
+              ส่งรหัส OTP ได้อีกครั้งใน<span id="time"> {count}</span> วินาที
+            </div>
+          )}
           <button
             className="btn btn-primary m-l-40 m-r-40"
             onClick={handleSubmit}

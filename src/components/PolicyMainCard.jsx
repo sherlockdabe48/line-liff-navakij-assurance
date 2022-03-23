@@ -15,14 +15,14 @@ export default function PolicyMainCard(props) {
             <div className="name">
               {userInfo.firstName} {userInfo.lastName}
             </div>
-            <div className="flex detail-wrapper">
+            <div className="detail-wrapper">
               <div className="detail-label-wrapper">
-                <p>เลขที่บัตรประชาชน/Passport</p>
-                <p>วัน/เดือน/ปีเกิด</p>
+                <label className="label">เลขที่บัตรประชาชน/Passport</label>
+                <span className="value">{userInfo.id}</span>
               </div>
-              <div className="detail-value-wrapper">
-                <p>{userInfo.id}</p>
-                <p>{birthDateStore}</p>
+              <div className="detail-label-wrapper">
+                <label className="label">วัน/เดือน/ปีเกิด</label>
+                <span className="value">{birthDateStore}</span>
               </div>
             </div>
           </div>

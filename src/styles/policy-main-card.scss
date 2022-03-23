@@ -4,26 +4,21 @@
   border-radius: 15px;
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  height: 194px;
-  // width: 326px;
+  min-height: 194px;
   color: #FFFFFF;
-  min-width: 308px;
+  min-width: 320px;
   max-width: 380px;
 
   .logo-wrapper {
     background-color: #FFFFFF;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    // padding-right: ;
     position: relative;
     display: flex;
     justify-content: flex-end;
-    // z-index: 999;
     img.logo {
-      // position: absolute;
       margin-right: 16px;
       width: 72px;
-      // margin-left: 214px;
       margin-top: 4px;
       margin-bottom: 4px;
     }
@@ -32,17 +27,31 @@
   .user-detail-wrapper {
     background-color: var(--navakij-navy);
     
-    padding-top: 65px;
+    padding-top: 56px;
     padding-left: 33px;
 
     .name {
-      font-size: 24px;
+      font-size: 22px;
       margin-bottom: 14px;
+      max-width: 230px;
+      word-break: break-word
     }
 
     .detail-wrapper {
       font-size: 14px;
-      gap: 32px;
+
+      .detail-label-wrapper {
+        display: flex;
+        align-items: baseline;
+
+        .label {
+          min-width: 170px;
+        }
+
+        .value {
+          font-size: 12px !important;
+        }
+      }
     }
   }
 }

@@ -99,7 +99,7 @@ export default function OTPConfirmPopup(props) {
           <h3>ยืนยันรหัส OTP</h3>
           <div className="text-desc-wrapper">
             <p>กรุณากรอกรหัส OTP 6 หลัก</p>
-            <p>ที่ส่งไปยังเบอร์โทรศัพท์ {phoneNumber}</p>
+            <p>ที่ส่งไปยังเบอร์โทรศัพท์ {phoneNumber.slice(0, 3)}-{phoneNumber.slice(3, 6)}-XXXX</p>
             <p>(Ref: {otpRefData?.optRef})</p>
           </div>
           <div className="flex otp-input-wrapper">

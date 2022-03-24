@@ -5,7 +5,7 @@
   bottom: 0;
   left: 0;
   z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.35);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
 
   .otp-confirm-popup {
@@ -19,7 +19,7 @@
     max-height: 330px;
     padding: 16px 0;
     left: 50%;
-    top: 30%;
+    top: 40%;
     transform: translate(-50%, -50%);
     background-color: white;
     border: 1px solid #CCCCCC;

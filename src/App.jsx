@@ -28,7 +28,9 @@ function App({
   const [authenData, setAuthenData] = useState({})
   const [pictureUrl, setPictureUrl] = useState("")
   const [userId, setUserId] = useState("")
+  const [userToken, setUserToken] = useState("")
   const [userOS, setUserOS] = useState("")
+  const [userEmail, setUserEmail] = useState("")
   const [isConsent, setIsConsent] = useState(null)
   const [isLoggedInLine, setIsLoggedInLine] = useState(false)
 
@@ -70,15 +72,19 @@ function App({
   // Function runLiff จะเป็นการยิง API ไปหา Line เพื่อ initiate ก่อนที่จะข้อใช้ข้อมูลของ Line User
   async function runLiff() {
     // liffId ได้มาจาก console ของ line developer > Provider > Chanel > Liff Id "1656990746-QbJoG5ny"
-    await liff.init({ liffId: "1656990746-QbJoG5ny" }).catch((err) => {
+    await liff.init({ liffId: "1656915926-p1LyQKPo" }).catch((err) => {
       throw err
     })
     // เมื่อ User login line แล้ว จะเรียกฟังชั่น liff.getProfile() เพื่อดึงข้อมูลของผู้ใช้
     if (liff.isLoggedIn()) {
       console.log("You already login")
       let getProfile = await liff.getProfile()
+      const email = liff.getDecodedIDToken().email
+      const userToken = liff.getIDToken()
       setPictureUrl(getProfile.pictureUrl)
       setUserId(getProfile.userId)
+      setUserToken(userToken)
+      setUserEmail(email)
 
       let getOS = liff.getOS()
       setUserOS(getOS)
@@ -138,6 +144,9 @@ function App({
               closeLIFF={closeLIFF}
               userId={userId}
               userOS={userOS}
+              pictureUrl={pictureUrl}
+              userEmail={userEmail}
+              userToken={userToken}
             />
           }
         />

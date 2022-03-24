@@ -59,6 +59,7 @@ export default function VerifyIdentity({
           identityKey: userId,
           identityValue: idPassport,
           dateOfBirthString: birthDate.split("-").reverse().join("-"),
+          dateTime: new Date()
         })
 
         if (data.msgCode === "VALID") {
@@ -90,6 +91,7 @@ export default function VerifyIdentity({
         dateOfBirthString: birthDate.split("-").reverse().join("-"),
         identityKey: userId,
         mobileNo: phoneNumber,
+        dateTime: new Date()
       })
       if (data.msgCode === "SUCCESS") {
         setOtpRefData(data.data)
@@ -122,6 +124,7 @@ export default function VerifyIdentity({
           mobileNo: phoneNumber,
           optRef: otpRefData.optRef,
           otp: otpString,
+          dateTime: new Date()
         })
         if (data.msgCode === "SUCCESS") {
           handleCloseOtpPopup()

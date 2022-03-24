@@ -10,6 +10,9 @@ export default function TermsAndCondition({
   closeLIFF,
   userId,
   userOS,
+  pictureUrl,
+  userEmail,
+  userToken,
 }) {
   // STATES
   const [termsConditionsHTML, setTermsConditionsHTML] = useState("")
@@ -78,9 +81,13 @@ export default function TermsAndCondition({
         consentFullHtmlText: "",
         identityKeyType: "LINE_ID",
         identityKey: userId,
+        userLineOpenIdToken: userToken || '',
         isAccept: true,
-        clientIpAddress: ip,
-        clientInfo: userOS,
+        clientIpAddress: ip || '',
+        clientInfo: userOS || '',
+        clientAvatar: pictureUrl || '',
+        clientEmail: userEmail || '',
+        dateTimeConsent: new Date()
       })
       // If saveconsent is success go to verification page
       // ถ้า Consent สำเร็จ จะไปที่หน้า "/verify-identity" ถ้าไม่สำเร็จระบบจะค้างที่หน้า loading หมุน ๆ

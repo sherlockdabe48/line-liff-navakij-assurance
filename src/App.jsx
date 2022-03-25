@@ -26,11 +26,11 @@ function App({
 }) {
   // STATE MANAGEMENT
   const [authenData, setAuthenData] = useState({})
-  const [pictureUrl, setPictureUrl] = useState("")
-  const [userId, setUserId] = useState("")
-  const [userToken, setUserToken] = useState("")
-  const [userOS, setUserOS] = useState("")
-  const [userEmail, setUserEmail] = useState("")
+  const [pictureUrl, setPictureUrl] = useState("testImage")
+  const [userId, setUserId] = useState("testId")
+  const [userToken, setUserToken] = useState("testToken")
+  const [userOS, setUserOS] = useState("testOS")
+  const [userEmail, setUserEmail] = useState("testEmail")
   const [isConsent, setIsConsent] = useState(null)
   const [isLoggedInLine, setIsLoggedInLine] = useState(false)
 
@@ -48,7 +48,7 @@ function App({
   // และจะถูก Rerender อีกครั้งเมื่อค่าของตัวแปรที่อยู่ใน [] ด้านท้ายของฟังชั่นมีการเปลี่ยนแปลง หากใน [] เป็นค่าว่าง หมายถึงว่าฟังชั่นใน useEffect นั้น ๆ จะถูกเรียกแค่ครั้งดียวในครั้งแรก
   // ในกรณีนี้ runLiff() จะถูกเรียกแค่ครั้งแรกครั้งเดียวของการเข้าถึง App.jsx
   useEffect(async () => {
-    await runLiff()
+    // await runLiff()
   }, [])
 
   useEffect(async () => {

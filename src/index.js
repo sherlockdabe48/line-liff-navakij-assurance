@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename={'/liff'}>
     <React.StrictMode>
       <Provider store={store}>
           <App />

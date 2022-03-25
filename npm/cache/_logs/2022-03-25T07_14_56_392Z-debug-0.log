@@ -1,0 +1,40 @@
+0 verbose cli [
+0 verbose cli   '/usr/local/bin/node',
+0 verbose cli   '/Users/dabconicle/.npm-global/bin/npm',
+0 verbose cli   'run',
+0 verbose cli   'build'
+0 verbose cli ]
+1 info using npm@8.4.1
+2 info using node@v14.17.4
+3 timing npm:load:whichnode Completed in 1ms
+4 timing config:load:defaults Completed in 2ms
+5 timing config:load:file:/Users/dabconicle/.npm-global/lib/node_modules/npm/npmrc Completed in 2ms
+6 timing config:load:builtin Completed in 2ms
+7 timing config:load:cli Completed in 1ms
+8 verbose config tmp This setting is no longer used.  npm stores temporary files in a special
+8 verbose config location in the cache, and they are managed by
+8 verbose config     [`cacache`](http://npm.im/cacache).
+9 timing config:load:env Completed in 1ms
+10 timing config:load:file:/Users/dabconicle/Desktop/Source code/line-liff-navakij-assurance/.npmrc Completed in 0ms
+11 timing config:load:project Completed in 1ms
+12 timing config:load:file:/Users/dabconicle/.npmrc Completed in 0ms
+13 timing config:load:user Completed in 1ms
+14 timing config:load:file:/Users/dabconicle/Desktop/Source code/line-liff-navakij-assurance/npm/etc/npmrc Completed in 0ms
+15 timing config:load:global Completed in 0ms
+16 timing config:load:validate Completed in 0ms
+17 timing config:load:credentials Completed in 1ms
+18 timing config:load:setEnvs Completed in 0ms
+19 timing config:load Completed in 9ms
+20 timing npm:load:configload Completed in 9ms
+21 timing npm:load:setTitle Completed in 9ms
+22 timing config:load:flatten Completed in 3ms
+23 timing npm:load:display Completed in 4ms
+24 verbose logfile /Users/dabconicle/Desktop/Source code/line-liff-navakij-assurance/npm/cache/_logs/2022-03-25T07_14_56_392Z-debug-0.log
+25 timing npm:load:logFile Completed in 4ms
+26 timing npm:load:timers Completed in 0ms
+27 timing npm:load:configScope Completed in 0ms
+28 timing npm:load Completed in 27ms
+29 timing command:run Completed in 16921ms
+30 verbose exit 0
+31 timing npm Completed in 17034ms
+32 info ok

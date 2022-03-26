@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
-import InsuranceDetail from "./InsuranceDetail"
-import PolicyMainCard from "./PolicyMainCard"
+import InsuranceDetail from "./InsuranceDetail.jsx"
+import PolicyMainCard from "./PolicyMainCard.jsx"
 import { Phone } from "@material-ui/icons"
 import { useLocation } from "react-router-dom"
 

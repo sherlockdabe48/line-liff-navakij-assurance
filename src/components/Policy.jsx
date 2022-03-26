@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import PolicyMainCard from "./PolicyMainCard"
-import PolicySubCard from "./PolicySubCard"
+import PolicyMainCard from "./PolicyMainCard.jsx"
+import PolicySubCard from "./PolicySubCard.jsx"
 import { useNavigate } from "react-router-dom"
 import { Phone } from "@material-ui/icons"
 import axios from "axios"

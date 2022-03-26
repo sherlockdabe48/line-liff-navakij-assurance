@@ -1,6 +1,6 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
-import OTPConfirmPopup from "./OTPConfirmPopup"
+import OTPConfirmPopup from "./OTPConfirmPopup.jsx"
 import { useNavigate } from "react-router-dom"
 import { Event } from "@material-ui/icons"
 import { MinimalSpinner } from "loading-animations-react"

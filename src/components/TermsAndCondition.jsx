@@ -1,7 +1,7 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import LoadingFull from "./LoadingFull"
+import LoadingFull from "./LoadingFull.jsx"
 import publicIp from "public-ip"
 import { MinimalSpinner } from "loading-animations-react"
 

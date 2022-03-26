@@ -63,8 +63,8 @@ function App({
       }
 
       // ถ้า Consent แล้ว ไปหน้า /verify-identity ถ้าไม่ ให้ไปหน้า /terms-conditions
-      if (isConsent) navigate("/verify-identity")
-      else navigate("/terms-conditions")
+      if (isConsent) navigate("/liff/verify-identity")
+      else navigate("/liff/terms-conditions")
     }
   }, [authenData.CONTROLKEY, isConsent, userId.length])
 

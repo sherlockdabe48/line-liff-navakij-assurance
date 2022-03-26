@@ -59,8 +59,8 @@ export default function Policy({
       system: "LINEOA",
       project: "LINEOA",
       channel: "LINE",
-      identityKey: userId,
-      dateTime: new Date()
+      identityKey: userId || "",
+      dateTime: new Date(),
     })
     if (data.msgCode === "SUCCESS") {
       setPolicyDataList(data.data)

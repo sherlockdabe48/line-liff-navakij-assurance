@@ -14,7 +14,6 @@ import Policy from "./components/Policy"
 import PolicyEach from "./components/PolicyEach"
 import NoUser from "./components/NoUser"
 import { useNavigate } from "react-router-dom"
-import liff from "@line/liff/dist/lib"
 
 function App({
   appendData,
@@ -26,11 +25,11 @@ function App({
 }) {
   // STATE MANAGEMENT
   const [authenData, setAuthenData] = useState({})
-  const [pictureUrl, setPictureUrl] = useState("testImage")
-  const [userId, setUserId] = useState("testId")
-  const [userToken, setUserToken] = useState("testToken")
-  const [userOS, setUserOS] = useState("testOS")
-  const [userEmail, setUserEmail] = useState("testEmail")
+  const [pictureUrl, setPictureUrl] = useState("")
+  const [userId, setUserId] = useState("")
+  const [userToken, setUserToken] = useState("")
+  const [userOS, setUserOS] = useState("")
+  const [userEmail, setUserEmail] = useState("")
   const [isConsent, setIsConsent] = useState(null)
   const [isLoggedInLine, setIsLoggedInLine] = useState(false)
 
@@ -63,8 +62,8 @@ function App({
       }
 
       // ถ้า Consent แล้ว ไปหน้า /verify-identity ถ้าไม่ ให้ไปหน้า /terms-conditions
-      if (isConsent) navigate("/liff/verify-identity")
-      else navigate("/liff/terms-conditions")
+      if (isConsent) navigate("/verify-identity")
+      else navigate("/terms-conditions")
     }
   }, [authenData.CONTROLKEY, isConsent, userId.length])
 
@@ -102,7 +101,7 @@ function App({
   async function loginNavakij() {
     console.log("loginNavakij")
     try {
-      const res = await axios.post("/login/token", {
+      const res = await axios.post("login/token", {
         username: "test.call.nauth@navakij.co.th",
         password: "iydKk8;k,x]vf4yp2565",
         system: "APICALL",
@@ -122,7 +121,7 @@ function App({
           masterConsentCode: "MC-LINEOA-001",
           system: "LINEOA",
           project: "LINEOA",
-          identityKey: userId,
+          identityKey: userId || "",
         },
       })
       setIsConsent(data.isConsent)

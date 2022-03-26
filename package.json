@@ -1,7 +1,7 @@
 {
   "name": "line-liff-navakij-assurance",
   "version": "0.1.0",
-  "homepage": "http://localhost:8080/liff/",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@line/liff": "^2.18.2",

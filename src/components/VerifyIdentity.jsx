@@ -56,10 +56,10 @@ export default function VerifyIdentity({
           channel: "LINE",
           masterConsentCode: "MC-LINEOA-001",
           identityType: "LINE_ID",
-          identityKey: userId,
+          identityKey: userId || "",
           identityValue: idPassport,
           dateOfBirthString: birthDate.split("-").reverse().join("-"),
-          dateTime: new Date()
+          dateTime: new Date(),
         })
 
         if (data.msgCode === "VALID") {
@@ -89,9 +89,9 @@ export default function VerifyIdentity({
         identityType: "LINE_ID",
         identityValue: idPassport,
         dateOfBirthString: birthDate.split("-").reverse().join("-"),
-        identityKey: userId,
+        identityKey: userId || "",
         mobileNo: phoneNumber,
-        dateTime: new Date()
+        dateTime: new Date(),
       })
       if (data.msgCode === "SUCCESS") {
         setOtpRefData(data.data)
@@ -120,11 +120,11 @@ export default function VerifyIdentity({
           system: "LINEOA",
           project: "LINEOA",
           channel: "LINE",
-          identityKey: userId,
+          identityKey: userId || "",
           mobileNo: phoneNumber,
           optRef: otpRefData.optRef,
           otp: otpString,
-          dateTime: new Date()
+          dateTime: new Date(),
         })
         if (data.msgCode === "SUCCESS") {
           handleCloseOtpPopup()

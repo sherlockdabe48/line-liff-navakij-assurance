@@ -6,6 +6,7 @@ import publicIp from "public-ip"
 import { MinimalSpinner } from "loading-animations-react"
 
 export default function TermsAndCondition({
+  apiPath,
   authenData,
   closeLIFF,
   userId,
@@ -45,7 +46,7 @@ export default function TermsAndCondition({
   // FUNCTIONS
   async function getTermsConditions() {
     try {
-      const { data } = await axios.get(`/consent/getmasterconsent`, {
+      const { data } = await axios.get(apiPath.GET_MASTER_CONSENT_PATH, {
         params: {
           masterConsentCode: "MC-LINEOA-001",
           system: "LINEOA",
@@ -68,7 +69,7 @@ export default function TermsAndCondition({
   async function submitSaveConsent() {
     setIsLoadingSmall(true)
     try {
-      const { data } = await axios.post("/consent/saveconsentinfo", {
+      const { data } = await axios.post(apiPath.SAVE_CONSENT_INFO_PATH, {
         system: "LINEOA",
         project: "LINEOA",
         channel: "LINE",

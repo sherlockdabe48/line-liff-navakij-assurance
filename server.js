@@ -29,16 +29,16 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
-app.post('/login/token', (req, res) => {
+app.post(process.env.AUTHEN_PATH, (req, res) => {
   request.post({ url: process.env.AUTHEN_API_URL, form: {
-    username: process.env.USERNAME,
-    password: process.env.PASSWORD,
-    project: process.env.PROJECT,
-    system: process.env.SYSTEM,
+    username: process.env.AUTHEN_USERNAME,
+    password: process.env.AUTHEN_PASSWORD,
+    project: process.env.AUTHEN_PROJECT,
+    system: process.env.AUTHEN_SYSTEM,
   }}).pipe(res);  
 })
 
-app.get('/consent/checkisconsent', function(req, res) {
+app.get(process.env.CHECK_IS_CONSENT_PATH, function(req, res) {
     request({
       headers: {
         CONTROLKEY: req.headers['controlkey'],
@@ -53,7 +53,7 @@ app.get('/consent/checkisconsent', function(req, res) {
     });
 });
 
-app.get('/consent/getmasterconsent', function(req, res) {
+app.get(process.env.GET_MASTER_CONSENT_PATH, function(req, res) {
     request({
       headers: {
         CONTROLKEY: req.headers['controlkey'],
@@ -68,8 +68,7 @@ app.get('/consent/getmasterconsent', function(req, res) {
     });
   });
   
-  app.post('/consent/saveconsentinfo', function(req, res) {
-
+  app.post(process.env.SAVE_CONSENT_INFO_PATH, function(req, res) {
     request({
       headers: {
         CONTROLKEY: req.headers['controlkey'],
@@ -84,7 +83,7 @@ app.get('/consent/getmasterconsent', function(req, res) {
     });
   });
 
-  app.post('/api/customer/identifying', function(req, res) {
+  app.post(process.env.CUSTOMER_IDENTIFY_PATH, function(req, res) {
     request({
       headers: {
         CONTROLKEY: req.headers['controlkey'],
@@ -99,7 +98,7 @@ app.get('/consent/getmasterconsent', function(req, res) {
     });
   });
 
-  app.post('/api/customer/otp/request', function(req, res) {
+  app.post(process.env.OTP_REQUEST_PATH, function(req, res) {
     request({
       headers: {
         CONTROLKEY: req.headers['controlkey'],
@@ -114,7 +113,7 @@ app.get('/consent/getmasterconsent', function(req, res) {
     });
   });
 
-  app.post('/api/customer/otp/confirm', function(req, res) {
+  app.post(process.env.OTP_CONFIRM_PATH, function(req, res) {
     request({
       headers: {
         CONTROLKEY: req.headers['controlkey'],
@@ -129,7 +128,7 @@ app.get('/consent/getmasterconsent', function(req, res) {
     });
   });
 
-  app.post('/api/mypolicy/list', function(req, res) {
+  app.post(process.env.POLICY_LIST_PATH, function(req, res) {
     request({
       headers: {
         CONTROLKEY: req.headers['controlkey'],

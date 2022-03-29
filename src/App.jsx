@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom"
 
 function App({
   appendData,
+  apiPath,
   userInfo,
   policyTypeCodeToName,
   birthDateStore,
@@ -70,7 +71,7 @@ function App({
   // Function runLiff จะเป็นการยิง API ไปหา Line เพื่อ initiate ก่อนที่จะข้อใช้ข้อมูลของ Line User
   async function runLiff() {
     // liffId ได้มาจาก console ของ line developer > Provider > Chanel > Liff Id "1656990746-QbJoG5ny"
-    await liff.init({ liffId: "1656915926-p1LyQKPo" }).catch((err) => {
+    await liff.init({ liffId: "1656990746-QbJoG5ny" }).catch((err) => {
       throw err
     })
     // เมื่อ User login line แล้ว จะเรียกฟังชั่น liff.getProfile() เพื่อดึงข้อมูลของผู้ใช้
@@ -97,15 +98,7 @@ function App({
   // API CALL NAVAKIJ FUNCTIONS
   async function loginNavakij() {
     try {
-      const res = await axios.post(
-        "login/token"
-        // {
-        //   username: "test.call.nauth@navakij.co.th",
-        //   password: "iydKk8;k,x]vf4yp2565",
-        //   system: "APICALL",
-        //   project: "APICALL",
-        // }
-      )
+      const res = await axios.post(apiPath.AUTHEN_PATH)
       setAuthenData(res.data)
     } catch (err) {
       return Promise.reject(err)
@@ -114,7 +107,7 @@ function App({
 
   async function checkIsConsent() {
     try {
-      const { data } = await axios.get("/consent/checkisconsent", {
+      const { data } = await axios.get(apiPath.CHECK_IS_CONSENT_PATH, {
         params: {
           masterConsentCode: "MC-LINEOA-001",
           system: "LINEOA",
@@ -144,6 +137,7 @@ function App({
               pictureUrl={pictureUrl}
               userEmail={userEmail}
               userToken={userToken}
+              apiPath={apiPath}
             />
           }
         />
@@ -155,6 +149,7 @@ function App({
               birthDateStore={birthDateStore}
               appendData={appendData}
               userId={userId}
+              apiPath={apiPath}
             />
           }
         />
@@ -169,6 +164,7 @@ function App({
               appendData={appendData}
               policyTypeCodeToName={policyTypeCodeToName}
               userId={userId}
+              apiPath={apiPath}
             />
           }
         />
@@ -195,6 +191,7 @@ const mapStateToProps = (state) => ({
   birthDateStore: state.birthDateStore,
   policyDataListStore: state.policyDataListStore,
   policyStatusCodeToName: state.policyStatusCodeToName,
+  apiPath: state.apiPath,
 })
 
 const mapDispatchToProps = {

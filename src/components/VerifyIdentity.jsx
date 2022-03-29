@@ -5,7 +5,12 @@ import { useNavigate } from "react-router-dom"
 import { Event } from "@material-ui/icons"
 import { MinimalSpinner } from "loading-animations-react"
 
-export default function VerifyIdentity({ birthDateStore, appendData, userId }) {
+export default function VerifyIdentity({
+  birthDateStore,
+  appendData,
+  userId,
+  apiPath,
+}) {
   // STATES
 
   const [idPassport, setIdPassport] = useState("")
@@ -43,7 +48,7 @@ export default function VerifyIdentity({ birthDateStore, appendData, userId }) {
     if (checkIsFormValid()) {
       setIsLoading(true)
       try {
-        const { data } = await axios.post("/api/customer/identifying", {
+        const { data } = await axios.post(apiPath.CUSTOMER_IDENTIFY_PATH, {
           system: "LINEOA",
           project: "LINEOA",
           channel: "LINE",
@@ -76,7 +81,7 @@ export default function VerifyIdentity({ birthDateStore, appendData, userId }) {
   async function submitOTPRequest() {
     setIsLoading(true)
     try {
-      const { data } = await axios.post("/api/customer/otp/request", {
+      const { data } = await axios.post(apiPath.OTP_REQUEST_PATH, {
         system: "LINEOA",
         project: "LINEOA",
         channel: "LINE",
@@ -111,7 +116,7 @@ export default function VerifyIdentity({ birthDateStore, appendData, userId }) {
     if (otpString.length === 6) {
       setIsLoading(true)
       try {
-        const { data } = await axios.post("/api/customer/otp/confirm", {
+        const { data } = await axios.post(apiPath.OTP_CONFIRM_PATH, {
           system: "LINEOA",
           project: "LINEOA",
           channel: "LINE",

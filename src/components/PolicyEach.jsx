@@ -30,18 +30,20 @@ export default function PolicyEach({
                 </strong>
               </p>
               <p className="policy-type">
-                {policyTypeCodeToName[currentPolicyData?.pol_type]}
+                {policyTypeCodeToName[currentPolicyData?.pol_type] || "-"}
               </p>
             </div>
             <div className="policy-detail-wrapper">
               <div className="flex label-wrapper policy-number">
                 <label className="label">เลขกรมธรรม์/ เลขหน้าบัตร</label>
-                <span className="value">{currentPolicyData.pol_id}</span>
+                <span className="value">{currentPolicyData.pol_id || "-"}</span>
               </div>
               <div className="flex label-wrapper policy-number">
                 <label className="label">สถานะ</label>
                 <span className="value">
-                  {policyStatusCodeToName[currentPolicyData.pol_status_active]}
+                  {policyStatusCodeToName[
+                    currentPolicyData.pol_status_active
+                  ] || "-"}
                 </span>
               </div>
               <div className="flex label-wrapper policy-number">

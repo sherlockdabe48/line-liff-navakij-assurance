@@ -6,6 +6,7 @@ import { Phone } from "@material-ui/icons"
 import axios from "axios"
 
 export default function Policy({
+  apiPath,
   userInfo,
   birthDateStore,
   appendData,
@@ -55,7 +56,7 @@ export default function Policy({
   }
 
   async function getPolicyData() {
-    const { data } = await axios.post("/api/mypolicy/list", {
+    const { data } = await axios.post(apiPath.POLICY_LIST_PATH, {
       system: "LINEOA",
       project: "LINEOA",
       channel: "LINE",

@@ -4,7 +4,7 @@ import axios from "axios"
 import { connect } from "react-redux"
 import { appendData } from "./action"
 
-import { Navigate, Routes, Route } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 import Header from "./components/Header"
 import Home from "./components/Home"
 import TermsAndCondition from "./components/TermsAndCondition"
@@ -70,12 +70,11 @@ function App({
   // Function runLiff จะเป็นการยิง API ไปหา Line เพื่อ initiate ก่อนที่จะข้อใช้ข้อมูลของ Line User
   async function runLiff() {
     // liffId ได้มาจาก console ของ line developer > Provider > Chanel > Liff Id "1656990746-QbJoG5ny"
-    await liff.init({ liffId: "1656990746-QbJoG5ny" }).catch((err) => {
+    await liff.init({ liffId: "1656915926-p1LyQKPo" }).catch((err) => {
       throw err
     })
     // เมื่อ User login line แล้ว จะเรียกฟังชั่น liff.getProfile() เพื่อดึงข้อมูลของผู้ใช้
     if (liff.isLoggedIn()) {
-      console.log("You already login")
       let getProfile = await liff.getProfile()
       const email = liff.getDecodedIDToken().email
       const userToken = liff.getIDToken()
@@ -87,7 +86,6 @@ function App({
       let getOS = liff.getOS()
       setUserOS(getOS)
     } else {
-      console.log("You not login yet")
       liff.login()
     }
   }
@@ -98,14 +96,16 @@ function App({
 
   // API CALL NAVAKIJ FUNCTIONS
   async function loginNavakij() {
-    console.log("loginNavakij")
     try {
-      const res = await axios.post("login/token", {
-        username: "test.call.nauth@navakij.co.th",
-        password: "iydKk8;k,x]vf4yp2565",
-        system: "APICALL",
-        project: "APICALL",
-      })
+      const res = await axios.post(
+        "login/token"
+        // {
+        //   username: "test.call.nauth@navakij.co.th",
+        //   password: "iydKk8;k,x]vf4yp2565",
+        //   system: "APICALL",
+        //   project: "APICALL",
+        // }
+      )
       setAuthenData(res.data)
     } catch (err) {
       return Promise.reject(err)
@@ -113,7 +113,6 @@ function App({
   }
 
   async function checkIsConsent() {
-    console.log("checkIsConsent")
     try {
       const { data } = await axios.get("/consent/checkisconsent", {
         params: {

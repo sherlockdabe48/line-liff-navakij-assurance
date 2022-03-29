@@ -5,16 +5,9 @@ import { useNavigate } from "react-router-dom"
 import { Event } from "@material-ui/icons"
 import { MinimalSpinner } from "loading-animations-react"
 
-export default function VerifyIdentity({
-  lineId,
-  userInfo,
-  birthDateStore,
-  appendData,
-  userId,
-}) {
+export default function VerifyIdentity({ birthDateStore, appendData, userId }) {
   // STATES
 
-  const [isFormValid, setIsFormValid] = useState(false)
   const [idPassport, setIdPassport] = useState("")
   const [birthDate, setBirthDate] = useState("")
   const [phoneNumber, setPhoneNumber] = useState("")
@@ -65,7 +58,10 @@ export default function VerifyIdentity({
         if (data.msgCode === "VALID") {
           submitOTPRequest()
           setIsLoading(false)
-        } else if (data.msgCode === "INVALID") {
+        } else if (
+          data.msgCode === "INVALID" ||
+          data.msgCode === "SYSTEM_ERROR"
+        ) {
           navigate("/verify-identity/no-user")
         }
       } catch (err) {
@@ -74,7 +70,6 @@ export default function VerifyIdentity({
       }
     } else {
       setIsLoading(false)
-      console.log("Form is not valid")
     }
   }
 
@@ -222,13 +217,6 @@ export default function VerifyIdentity({
         >
           ตรวจสอบ
         </button>
-        {/* <button
-          onClick={() => {
-            setShowOtpPopup(true)
-          }}
-        >
-          OpenPopup
-        </button> */}
       </form>
       {showOtpPopup && (
         <OTPConfirmPopup

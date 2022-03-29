@@ -60,7 +60,7 @@ export default function OTPConfirmPopup(props) {
   // PREPARE OTP
   function handleSubmit() {
     if (otpDigits.includes("")) {
-      console.log("you have white space in otp input please fill all input")
+      // you have white space in otp input please fill all input otherwise return this fuction
       return
     }
     const stringWithComma = otpDigits.toString()
@@ -99,7 +99,10 @@ export default function OTPConfirmPopup(props) {
           <h3>ยืนยันรหัส OTP</h3>
           <div className="text-desc-wrapper">
             <p>กรุณากรอกรหัส OTP 6 หลัก</p>
-            <p>ที่ส่งไปยังเบอร์โทรศัพท์ {phoneNumber.slice(0, 3)}-{phoneNumber.slice(3, 6)}-XXXX</p>
+            <p>
+              ที่ส่งไปยังเบอร์โทรศัพท์ {phoneNumber.slice(0, 3)}-
+              {phoneNumber.slice(3, 6)}-XXXX
+            </p>
             <p>(Ref: {otpRefData?.optRef})</p>
           </div>
           <div className="flex otp-input-wrapper">

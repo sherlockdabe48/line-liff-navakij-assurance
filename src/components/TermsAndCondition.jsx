@@ -44,7 +44,6 @@ export default function TermsAndCondition({
 
   // FUNCTIONS
   async function getTermsConditions() {
-    console.log("getTermsConditions")
     try {
       const { data } = await axios.get(`/consent/getmasterconsent`, {
         params: {

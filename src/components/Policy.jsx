@@ -88,6 +88,9 @@ export default function Policy({
         <div className="empty-space"></div>
       </div>
       <div className="footer">
+        <span className="footer-label">
+          หากท่านต้องการแก้ไขข้อมูล หรือข้อมูลไม่ถูกต้องกรุณาติดต่อ
+        </span>
         <a href="tel:1748" className="call-wrapper flex">
           <Phone className="phone-icon" />
           <span className="text">1748</span>

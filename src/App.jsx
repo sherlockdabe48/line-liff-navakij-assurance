@@ -26,11 +26,11 @@ function App({
 }) {
   // STATE MANAGEMENT
   const [authenData, setAuthenData] = useState({})
-  const [pictureUrl, setPictureUrl] = useState("")
-  const [userId, setUserId] = useState("")
-  const [userToken, setUserToken] = useState("")
-  const [userOS, setUserOS] = useState("")
-  const [userEmail, setUserEmail] = useState("")
+  const [pictureUrl, setPictureUrl] = useState("ttt")
+  const [userId, setUserId] = useState("ttt")
+  const [userToken, setUserToken] = useState("ttt")
+  const [userOS, setUserOS] = useState("ttt")
+  const [userEmail, setUserEmail] = useState("ttt")
   const [isConsent, setIsConsent] = useState(null)
 
   // GLOBAL CONSTANT
@@ -62,7 +62,7 @@ function App({
       }
 
       // ถ้า Consent แล้ว ไปหน้า /verify-identity ถ้าไม่ ให้ไปหน้า /terms-conditions
-      if (isConsent) navigate("/verify-identity")
+      if (isConsent) navigate("/policy")
       else navigate("/terms-conditions")
     }
   }, [authenData.CONTROLKEY, isConsent, userId.length])
@@ -71,7 +71,7 @@ function App({
   // Function runLiff จะเป็นการยิง API ไปหา Line เพื่อ initiate ก่อนที่จะข้อใช้ข้อมูลของ Line User
   async function runLiff() {
     // liffId ได้มาจาก console ของ line developer > Provider > Chanel > Liff Id "1656990746-QbJoG5ny"
-    await liff.init({ liffId: "1656990746-QbJoG5ny" }).catch((err) => {
+    await liff.init({ liffId: "1656915926-p1LyQKPo" }).catch((err) => {
       throw err
     })
     // เมื่อ User login line แล้ว จะเรียกฟังชั่น liff.getProfile() เพื่อดึงข้อมูลของผู้ใช้
@@ -86,13 +86,7 @@ function App({
 
       let getOS = liff.getOS()
       setUserOS(getOS)
-    } else {
-      liff.login()
     }
-  }
-
-  function closeLIFF() {
-    liff.closeWindow()
   }
 
   // API CALL NAVAKIJ FUNCTIONS
@@ -131,7 +125,6 @@ function App({
             <TermsAndCondition
               authenData={authenData}
               isConsent={isConsent}
-              closeLIFF={closeLIFF}
               userId={userId}
               userOS={userOS}
               pictureUrl={pictureUrl}

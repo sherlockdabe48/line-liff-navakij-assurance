@@ -48,8 +48,6 @@
       .next-button-wrapper {
         width: 50px;
       }
-
-
     }
 
     .policy-sub-card:active {
@@ -70,8 +68,15 @@
     left: 0;
     right: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    padding-top: 8px;
     z-index: 1000;
+
+    .footer-label {
+      color: var(--text-grey);
+    }
 
     .call-wrapper {
       background-color: #696A6E;

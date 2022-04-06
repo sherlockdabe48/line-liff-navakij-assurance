@@ -8,7 +8,6 @@ import { MinimalSpinner } from "loading-animations-react"
 export default function TermsAndCondition({
   apiPath,
   authenData,
-  closeLIFF,
   userId,
   userOS,
   pictureUrl,
@@ -131,7 +130,11 @@ export default function TermsAndCondition({
                 name="accept-terms-conditions"
                 onChange={() => handleToggleInput()}
               />
-              <span className="input-label">
+              <span
+                className={`input-label ${
+                  !isCheckedInput ? "input-label-not-checked" : ""
+                }`}
+              >
                 ข้าพเจ้ายอมรับข้อกำหนดและเงื่อนไขการให้บริการนี้
                 กรณีไม่ยอมรับจะไม่สามารถเข้าตรวจสอบข้อมูลได้
               </span>
@@ -145,9 +148,6 @@ export default function TermsAndCondition({
                 disabled={!isCheckedInput}
               >
                 ยอมรับ
-              </button>
-              <button className="btn btn-cancel" onClick={() => closeLIFF()}>
-                ไม่ยอมรับ
               </button>
             </div>
           </div>

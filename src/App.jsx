@@ -25,20 +25,12 @@ function App({
   policyStatusCodeToName,
 }) {
   // STATE MANAGEMENT
-  const [authenData, setAuthenData] = useState({})
-  const [pictureUrl, setPictureUrl] = useState("ttt")
-  const [userId, setUserId] = useState("ttt")
-  const [userToken, setUserToken] = useState("ttt")
-  const [userOS, setUserOS] = useState("ttt")
-  const [userEmail, setUserEmail] = useState("ttt")
+  const [pictureUrl, setPictureUrl] = useState("")
+  const [userId, setUserId] = useState("")
+  const [userToken, setUserToken] = useState("")
+  const [userOS, setUserOS] = useState("")
+  const [userEmail, setUserEmail] = useState("")
   const [isConsent, setIsConsent] = useState(null)
-
-  // GLOBAL CONSTANT
-  axios.defaults.headers = {
-    CONTROLKEY: authenData.CONTROLKEY,
-    Authorization: `Bearer ${authenData.Authorization}`,
-    "content-Type": "application/json",
-  }
 
   // HOOKS
   const navigate = useNavigate()
@@ -53,25 +45,24 @@ function App({
   useEffect(async () => {
     // หากได้ค่า userId มาจากการ init liff แล้วถึงจะนำ userId นี้ไปเช็ก consent ต่อไป
     if (userId.length) {
-      if (!authenData.CONTROLKEY) {
-        await loginNavakij()
-      }
-      //  ถ้าได้ค่า CONTROLKEY ซึ่งมาจาก API login แล้ว แต่ยังไม่รู้ว่า Consent หรือยัง (null) ให้ไปเช็ก checkIsConsent()
-      if (authenData.CONTROLKEY && isConsent === null) {
+      await loginNavakij()
+
+      // เมื่อยังไม่รู้ว่า Consent หรือยัง (null) ให้ไปเช็ก checkIsConsent()
+      if (isConsent === null) {
         await checkIsConsent()
       }
 
-      // ถ้า Consent แล้ว ไปหน้า /verify-identity ถ้าไม่ ให้ไปหน้า /terms-conditions
+      // ถ้า Consent แล้ว ไปหน้า /policy ถ้าไม่ ให้ไปหน้า /terms-conditions
       if (isConsent) navigate("/policy")
       else navigate("/terms-conditions")
     }
-  }, [authenData.CONTROLKEY, isConsent, userId.length])
+  }, [isConsent, userId.length])
 
   // LINE LIFF FUNCTIONS
   // Function runLiff จะเป็นการยิง API ไปหา Line เพื่อ initiate ก่อนที่จะข้อใช้ข้อมูลของ Line User
   async function runLiff() {
     // liffId ได้มาจาก console ของ line developer > Provider > Chanel > Liff Id "1656990746-QbJoG5ny"
-    await liff.init({ liffId: "1656915926-p1LyQKPo" }).catch((err) => {
+    await liff.init({ liffId: "1656990746-QbJoG5ny" }).catch((err) => {
       throw err
     })
     // เมื่อ User login line แล้ว จะเรียกฟังชั่น liff.getProfile() เพื่อดึงข้อมูลของผู้ใช้
@@ -93,7 +84,6 @@ function App({
   async function loginNavakij() {
     try {
       const res = await axios.post(apiPath.AUTHEN_PATH)
-      setAuthenData(res.data)
     } catch (err) {
       return Promise.reject(err)
     }
@@ -123,7 +113,6 @@ function App({
           path="/terms-conditions"
           element={
             <TermsAndCondition
-              authenData={authenData}
               isConsent={isConsent}
               userId={userId}
               userOS={userOS}

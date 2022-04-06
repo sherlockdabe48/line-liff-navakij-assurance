@@ -7,7 +7,6 @@ import { MinimalSpinner } from "loading-animations-react"
 
 export default function TermsAndCondition({
   apiPath,
-  authenData,
   userId,
   userOS,
   pictureUrl,
@@ -26,7 +25,7 @@ export default function TermsAndCondition({
 
   // เมื่อเข้า Component นี้แล้วจะ get term and conditions จาก API
   useEffect(async () => {
-    if (authenData.CONTROLKEY && !termsConditionsHTML) {
+    if (!termsConditionsHTML) {
       await getTermsConditions()
     }
     if (termsConditionsHTML && isLoading) {

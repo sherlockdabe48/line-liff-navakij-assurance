@@ -195,7 +195,6 @@ export default function VerifyIdentity({
           <label className="form-label" htmlFor="birth-date">
             วัน/เดือน/ปีเกิด(ค.ศ.)*
           </label>
-          {birthDate}
           <input
             className="input-item"
             name="birth-date"

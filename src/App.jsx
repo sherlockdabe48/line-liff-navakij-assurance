@@ -47,14 +47,17 @@ function App({
     if (userId.length) {
       await loginNavakij()
 
-      // เมื่อยังไม่รู้ว่า Consent หรือยัง (null) ให้ไปเช็ก checkIsConsent()
+      // เมื่อยังไม่รู้ว่า Consent หรือยัง (isConsent === null) ให้ไปเช็ก checkIsConsent()
       if (isConsent === null) {
         await checkIsConsent()
       }
 
-      // ถ้า Consent แล้ว ให้เช็กว่า Verify หรือยัง ถ้า Verify แล้วให้ไปหน้า /policy ถ้าไม่ ให้ไปหน้า /terms-conditions
-      if (isConsent) await checkIsVerify()
-      else navigate("/terms-conditions")
+      // ถ้า Consent แล้ว (isConsent === true) ให้เช็กว่า Verify หรือยัง ถ้า Verify แล้วให้ไปหน้า /policy ถ้าไม่ (isConsent === false) ให้ไปหน้า /terms-conditions
+      if (isConsent) {
+        await checkIsVerify()
+      } else if (isConsent != null && isConsent === false) {
+        navigate("/terms-conditions")
+      }
     }
   }, [isConsent, userId.length])
 
@@ -93,9 +96,6 @@ function App({
     try {
       const { data } = await axios.get(apiPath.CHECK_IS_CONSENT_PATH, {
         params: {
-          masterConsentCode: "MC-LINEOA-001",
-          system: "LINEOA",
-          project: "LINEOA",
           identityKey: userId || "",
         },
       })
@@ -108,16 +108,13 @@ function App({
   async function checkIsVerify() {
     try {
       const { data } = await axios.post(apiPath.POLICY_LIST_PATH, {
-        system: "LINEOA",
-        project: "LINEOA",
-        channel: "LINE",
         identityKey: userId || "",
       })
       if (data.msgCode === "SUCCESS") {
         navigate("/policy")
       } else navigate("/terms-conditions")
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 

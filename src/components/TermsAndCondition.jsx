@@ -45,11 +45,7 @@ export default function TermsAndCondition({
   async function getTermsConditions() {
     try {
       const { data } = await axios.get(apiPath.GET_MASTER_CONSENT_PATH, {
-        params: {
-          masterConsentCode: "MC-LINEOA-001",
-          system: "LINEOA",
-          project: "LINEOA",
-        },
+        params: {},
       })
       setTermsConditionsHTML(data?.masterConsent?.consentBodyHtmlText)
       if (termsConditionsHTML && isLoading) {
@@ -68,16 +64,6 @@ export default function TermsAndCondition({
     setIsLoadingSmall(true)
     try {
       const { data } = await axios.post(apiPath.SAVE_CONSENT_INFO_PATH, {
-        system: "LINEOA",
-        project: "LINEOA",
-        channel: "LINE",
-        masterConsentCode: "MC-LINEOA-001",
-        masterConsentVersion: 1,
-        consentHeaderHtmlText: "",
-        consentBodyHtmlText: "",
-        consentFooterHtmlText: "",
-        consentFullHtmlText: "",
-        identityKeyType: "LINE_ID",
         identityKey: userId || "",
         userLineOpenIdToken: userToken || "",
         isAccept: true,

@@ -49,11 +49,6 @@ export default function VerifyIdentity({
       setIsLoading(true)
       try {
         const { data } = await axios.post(apiPath.CUSTOMER_IDENTIFY_PATH, {
-          system: "LINEOA",
-          project: "LINEOA",
-          channel: "LINE",
-          masterConsentCode: "MC-LINEOA-001",
-          identityType: "LINE_ID",
           identityKey: userId || "",
           identityValue: idPassport,
           dateOfBirthString: birthDate,
@@ -82,11 +77,6 @@ export default function VerifyIdentity({
     setIsLoading(true)
     try {
       const { data } = await axios.post(apiPath.OTP_REQUEST_PATH, {
-        system: "LINEOA",
-        project: "LINEOA",
-        channel: "LINE",
-        masterConsentCode: "MC-LINEOA-001",
-        identityType: "LINE_ID",
         identityValue: idPassport,
         dateOfBirthString: birthDate,
         identityKey: userId || "",
@@ -117,9 +107,6 @@ export default function VerifyIdentity({
       setIsLoading(true)
       try {
         const { data } = await axios.post(apiPath.OTP_CONFIRM_PATH, {
-          system: "LINEOA",
-          project: "LINEOA",
-          channel: "LINE",
           identityKey: userId || "",
           mobileNo: phoneNumber,
           optRef: otpRefData.optRef,

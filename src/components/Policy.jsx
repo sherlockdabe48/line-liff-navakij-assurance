@@ -11,6 +11,7 @@ export default function Policy({
   birthDateStore,
   appendData,
   policyTypeCodeToName,
+  policyDataListStore,
   userId,
 }) {
   // เมื่อเข้ามาหน้านี้จะเรียกฟังชั่น getPolicyData() ด้วยการยิง API ไปที่ /api/mypolicy/list และทำการเห็บข้อมูลของลูกค้าลงใน userInfo ที่จะถูกเห็บลงใน STATE
@@ -27,6 +28,9 @@ export default function Policy({
 
   useEffect(async () => {
     await getPolicyData()
+  }, [])
+
+  useEffect(() => {
     if (policyDataList[0]?.pol_status_active === "C") {
       navigate("/verify-identity/no-user")
       return
@@ -38,7 +42,7 @@ export default function Policy({
           firstName: policyDataList[0]?.cust_first_name,
           lastName: policyDataList[0]?.cust_last_name,
           id: policyDataList[0]?.cust_nat_id,
-          birthDate: birthDateStore,
+          birthDate: policyDataList[0]?.cust_birth_date || birthDateStore,
         },
       })
     }
@@ -56,16 +60,21 @@ export default function Policy({
   }
 
   async function getPolicyData() {
-    const { data } = await axios.post(apiPath.POLICY_LIST_PATH, {
-      system: "LINEOA",
-      project: "LINEOA",
-      channel: "LINE",
-      identityKey: userId || "",
-      dateTime: new Date(),
-    })
-    if (data.msgCode === "SUCCESS") {
-      setPolicyDataList(data.data)
-      appendData({ policyDataListStore: [...data.data] })
+    if (policyDataListStore.length) {
+      setPolicyDataList(policyDataListStore)
+    } else {
+      try {
+        const { data } = await axios.post(apiPath.POLICY_LIST_PATH, {
+          identityKey: userId || "",
+          dateTime: new Date(),
+        })
+        if (data.msgCode === "SUCCESS") {
+          setPolicyDataList(data.data)
+          appendData({ policyDataListStore: [...data.data] })
+        }
+      } catch (err) {
+        console.error(err)
+      }
     }
   }
 

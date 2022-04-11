@@ -44,9 +44,7 @@ export default function TermsAndCondition({
   // FUNCTIONS
   async function getTermsConditions() {
     try {
-      const { data } = await axios.get(apiPath.GET_MASTER_CONSENT_PATH, {
-        params: {},
-      })
+      const { data } = await axios.get(apiPath.GET_MASTER_CONSENT_PATH)
       setTermsConditionsHTML(data?.masterConsent?.consentBodyHtmlText)
       if (termsConditionsHTML && isLoading) {
         setTimeout(() => {

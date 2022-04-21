@@ -31,7 +31,8 @@ const INITIAL_STATE = {
     OTP_REQUEST_PATH: "/api/customer/otp/request",
     OTP_CONFIRM_PATH: "/api/customer/otp/confirm",
     POLICY_LIST_PATH: "/api/mypolicy/list",
-  }
+  },
+  isBackToHome: false,
 }
 
 export default (state = INITIAL_STATE, action={}) => {

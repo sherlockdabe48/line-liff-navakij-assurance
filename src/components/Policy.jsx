@@ -28,6 +28,7 @@ export default function Policy({
 
   useEffect(async () => {
     await getPolicyData()
+    appendData({ isBackToHome: true })
   }, [])
 
   useEffect(() => {

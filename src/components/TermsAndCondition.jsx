@@ -12,6 +12,7 @@ export default function TermsAndCondition({
   pictureUrl,
   userEmail,
   userToken,
+  appendData,
 }) {
   // STATES
   const [termsConditionsHTML, setTermsConditionsHTML] = useState("")
@@ -33,6 +34,7 @@ export default function TermsAndCondition({
         setIsLoading(false)
       }, 1000)
     }
+    appendData({ isBackToHome: true })
   }, [termsConditionsHTML])
 
   // ทำการ get user ip ก่อนตั้งแต่เข้ามาเก็บไว้เลย เพราะว่าเดี๋ยวจะนำไปใช้ตอน Post saveconsent

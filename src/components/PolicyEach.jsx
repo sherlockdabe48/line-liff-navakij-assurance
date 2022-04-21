@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import InsuranceDetail from "./InsuranceDetail"
 import PolicyMainCard from "./PolicyMainCard"
 import { Phone } from "@material-ui/icons"
@@ -65,9 +65,12 @@ export default function PolicyEach({
         <InsuranceDetail currentPolicyData={currentPolicyData} />
       </div>
       <div className="footer">
+        <span className="footer-label">
+          หากท่านต้องการแก้ไขข้อมูล หรือข้อมูลไม่ถูกต้องกรุณาติดต่อ
+        </span>
         <a href="tel:1748" className="call-wrapper flex">
           <Phone className="phone-icon" />
-          <span className="text">1748 กด 4</span>
+          <span className="text">1748</span>
         </a>
       </div>
     </div>

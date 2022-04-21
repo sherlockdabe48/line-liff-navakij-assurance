@@ -14,6 +14,7 @@ import Policy from "./components/Policy"
 import PolicyEach from "./components/PolicyEach"
 import NoUser from "./components/NoUser"
 import { useNavigate } from "react-router-dom"
+import liff from "@line/liff/dist/lib"
 
 function App({
   appendData,
@@ -23,6 +24,7 @@ function App({
   birthDateStore,
   policyDataListStore,
   policyStatusCodeToName,
+  isBackToHome,
 }) {
   // STATE MANAGEMENT
   const [pictureUrl, setPictureUrl] = useState("")
@@ -118,6 +120,10 @@ function App({
     }
   }
 
+  function closeWindow() {
+    liff.closeWindow()
+  }
+
   return (
     <div className="App">
       <Header />
@@ -133,6 +139,7 @@ function App({
               userEmail={userEmail}
               userToken={userToken}
               apiPath={apiPath}
+              appendData={appendData}
             />
           }
         />
@@ -174,7 +181,12 @@ function App({
             />
           }
         />
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <Home isBackToHome={isBackToHome} closeWindow={closeWindow} />
+          }
+        />
       </Routes>
     </div>
   )
@@ -187,6 +199,7 @@ const mapStateToProps = (state) => ({
   policyDataListStore: state.policyDataListStore,
   policyStatusCodeToName: state.policyStatusCodeToName,
   apiPath: state.apiPath,
+  isBackToHome: state.isBackToHome,
 })
 
 const mapDispatchToProps = {

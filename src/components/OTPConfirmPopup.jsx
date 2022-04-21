@@ -8,6 +8,8 @@ export default function OTPConfirmPopup(props) {
     handleCloseOtpPopup,
     submitConfirmOTP,
     submitOTPRequest,
+    isOtpConfirmError,
+    clearErrorOTPConfirm,
   } = props
 
   // STATES
@@ -25,13 +27,18 @@ export default function OTPConfirmPopup(props) {
 
   // เมื่อ Popup นี้แสดงขึ้นจะถูกต้องเวลา 30 วินาทีถอยหลัง เพื่อกันไม่ให้ลูกค้ากดปุ่ม ขอรหัส OTP อีกครั้งย้ำ ๆ จะกดได้อีกครั้งก็ต่อเมื่อเวลา ครบ 30 วินาที และจะทำการขอรหัส OTP อีกครั้ง
   useEffect(() => {
-    if (otpRefData) {
-      startTimer(30)
-    }
     if (otpString) {
       submitConfirmOTP(otpString)
     }
   }, [otpString])
+
+  useEffect(() => {
+    if (otpRefData) {
+      startTimer(30)
+    }
+  }, [])
+
+  useEffect(() => {}, [isOtpConfirmError])
 
   // OTHER FUNCTIONS
   function handleInputOtp(e, digitStr, index) {
@@ -85,10 +92,12 @@ export default function OTPConfirmPopup(props) {
   }
 
   function handleRefreshOtp() {
+    clearErrorOTPConfirm()
     submitOTPRequest()
     setCanClickSendOtpAgain(false)
     timer = 30
     startTimer(timer)
+    setOtpDigits(["", "", "", "", "", ""])
   }
 
   return (
@@ -105,30 +114,42 @@ export default function OTPConfirmPopup(props) {
             </p>
             <p>(Ref: {otpRefData?.optRef})</p>
           </div>
-          <div className="flex otp-input-wrapper">
-            {otpDigits.map((digitStr, index) => {
-              return (
-                <input
-                  className="one-digit-input text-center"
-                  type="text"
-                  pattern="\d*"
-                  key={index}
-                  name={`otp-${index + 1}`}
-                  maxLength={1}
-                  value={otpDigits[index]}
-                  onChange={(e) => handleInputOtp(e, digitStr, index)}
-                />
-              )
-            })}
+          <div>
+            <div className="flex otp-input-wrapper">
+              {otpDigits.map((digitStr, index) => {
+                return (
+                  <input
+                    className="one-digit-input text-center"
+                    type="text"
+                    pattern="\d*"
+                    key={index}
+                    name={`otp-${index + 1}`}
+                    maxLength={1}
+                    value={otpDigits[index]}
+                    onFocus={(e) => {
+                      e.target.select()
+                    }}
+                    onChange={(e) => handleInputOtp(e, digitStr, index)}
+                  />
+                )
+              })}
+            </div>
+            {isOtpConfirmError ? (
+              <div className="otp-error-warning">
+                <span>รหัสผิด กรุณากรอกใหม่อีกครั้ง</span>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
           {canClickSendOtpAgain ? (
             <div className="refresh" onClick={() => handleRefreshOtp()}>
               <Refresh />
-              <span>ส่งรหัส OTP อีกครั้ง</span>
+              <span>ขอรหัส OTP อีกครั้ง</span>
             </div>
           ) : (
             <div>
-              ส่งรหัส OTP ได้อีกครั้งใน<span id="time"> {count}</span> วินาที
+              ขอรหัส OTP ใหม่ได้อีกครั้งใน<span id="time"> {count}</span> วินาที
             </div>
           )}
           <button

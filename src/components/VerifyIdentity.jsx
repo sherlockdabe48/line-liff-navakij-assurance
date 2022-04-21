@@ -2,7 +2,6 @@ import axios from "axios"
 import React, { useEffect, useState } from "react"
 import OTPConfirmPopup from "./OTPConfirmPopup"
 import { useNavigate } from "react-router-dom"
-import { Event } from "@material-ui/icons"
 import { MinimalSpinner } from "loading-animations-react"
 
 export default function VerifyIdentity({
@@ -20,6 +19,7 @@ export default function VerifyIdentity({
   const [showOtpPopup, setShowOtpPopup] = useState(false)
   const [otpRefData, setOtpRefData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isOtpConfirmError, setIsOtpConfirmError] = useState(false)
 
   // HOOKS
   const navigate = useNavigate()
@@ -116,6 +116,10 @@ export default function VerifyIdentity({
         if (data.msgCode === "SUCCESS") {
           handleCloseOtpPopup()
           navigate("/policy")
+          setIsOtpConfirmError(false)
+          setIsLoading(false)
+        } else if (data.msgCode === "FAILED") {
+          setIsOtpConfirmError(true)
           setIsLoading(false)
         }
         return Promise.resolve()
@@ -141,6 +145,11 @@ export default function VerifyIdentity({
 
   function handleCloseOtpPopup() {
     setShowOtpPopup(false)
+    clearErrorOTPConfirm()
+  }
+
+  function clearErrorOTPConfirm() {
+    setIsOtpConfirmError(false)
   }
 
   function checkIsFormValid() {
@@ -239,6 +248,8 @@ export default function VerifyIdentity({
           handleCloseOtpPopup={handleCloseOtpPopup}
           submitConfirmOTP={submitConfirmOTP}
           submitOTPRequest={submitOTPRequest}
+          isOtpConfirmError={isOtpConfirmError}
+          clearErrorOTPConfirm={clearErrorOTPConfirm}
         />
       )}
     </div>

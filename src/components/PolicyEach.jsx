@@ -1,6 +1,6 @@
-import React, { useEffect } from "react"
-import InsuranceDetail from "./InsuranceDetail.jsx"
-import PolicyMainCard from "./PolicyMainCard.jsx"
+import React from "react"
+import InsuranceDetail from "./InsuranceDetail"
+import PolicyMainCard from "./PolicyMainCard"
 import { Phone } from "@material-ui/icons"
 import { useLocation } from "react-router-dom"
 
@@ -30,18 +30,20 @@ export default function PolicyEach({
                 </strong>
               </p>
               <p className="policy-type">
-                {policyTypeCodeToName[currentPolicyData?.pol_type]}
+                {policyTypeCodeToName[currentPolicyData?.pol_type] || "-"}
               </p>
             </div>
             <div className="policy-detail-wrapper">
               <div className="flex label-wrapper policy-number">
                 <label className="label">เลขกรมธรรม์/ เลขหน้าบัตร</label>
-                <span className="value">{currentPolicyData.pol_id}</span>
+                <span className="value">{currentPolicyData.pol_id || "-"}</span>
               </div>
               <div className="flex label-wrapper policy-number">
                 <label className="label">สถานะ</label>
                 <span className="value">
-                  {policyStatusCodeToName[currentPolicyData.pol_status_active]}
+                  {policyStatusCodeToName[
+                    currentPolicyData.pol_status_active
+                  ] || "-"}
                 </span>
               </div>
               <div className="flex label-wrapper policy-number">
@@ -63,9 +65,12 @@ export default function PolicyEach({
         <InsuranceDetail currentPolicyData={currentPolicyData} />
       </div>
       <div className="footer">
+        <span className="footer-label">
+          หากท่านต้องการแก้ไขข้อมูล หรือข้อมูลไม่ถูกต้องกรุณาติดต่อ
+        </span>
         <a href="tel:1748" className="call-wrapper flex">
           <Phone className="phone-icon" />
-          <span className="text">1748 กด 4</span>
+          <span className="text">1748</span>
         </a>
       </div>
     </div>

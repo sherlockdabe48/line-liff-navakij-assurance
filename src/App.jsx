@@ -4,41 +4,44 @@ import axios from "axios"
 import { connect } from "react-redux"
 import { appendData } from "./action"
 
-import { Navigate, Routes, Route } from "react-router-dom"
-import Header from "./components/Header.jsx"
-import Home from "./components/Home.jsx"
-import TermsAndCondition from "./components/TermsAndCondition.jsx"
-import VerifyIdentity from "./components/VerifyIdentity.jsx"
+import { Routes, Route } from "react-router-dom"
+import Header from "./components/Header"
+import Home from "./components/Home"
+import TermsAndCondition from "./components/TermsAndCondition"
+import VerifyIdentity from "./components/VerifyIdentity"
 import { useEffect, useState } from "react"
 import Policy from "./components/Policy.jsx"
 import PolicyEach from "./components/PolicyEach.jsx"
 import NoUser from "./components/NoUser.jsx"
 import { useNavigate } from "react-router-dom"
+import liff from "@line/liff/dist/lib"
 
 function App({
   appendData,
+  apiPath,
   userInfo,
   policyTypeCodeToName,
   birthDateStore,
   policyDataListStore,
   policyStatusCodeToName,
+  isBackToHome,
 }) {
   // STATE MANAGEMENT
+<<<<<<< HEAD
   const [authenData, setAuthenData] = useState({})
   const [pictureUrl, setPictureUrl] = useState("testImage")
   const [userId, setUserId] = useState("testId")
   const [userToken, setUserToken] = useState("testToken")
   const [userOS, setUserOS] = useState("testOS")
   const [userEmail, setUserEmail] = useState("testemail")
+=======
+  const [pictureUrl, setPictureUrl] = useState("")
+  const [userId, setUserId] = useState("")
+  const [userToken, setUserToken] = useState("")
+  const [userOS, setUserOS] = useState("")
+  const [userEmail, setUserEmail] = useState("")
+>>>>>>> develop
   const [isConsent, setIsConsent] = useState(null)
-  const [isLoggedInLine, setIsLoggedInLine] = useState(false)
-
-  // GLOBAL CONSTANT
-  axios.defaults.headers = {
-    CONTROLKEY: authenData.CONTROLKEY,
-    Authorization: `Bearer ${authenData.Authorization}`,
-    "content-Type": "application/json",
-  }
 
   // HOOKS
   const navigate = useNavigate()
@@ -53,19 +56,21 @@ function App({
   useEffect(async () => {
     // หากได้ค่า userId มาจากการ init liff แล้วถึงจะนำ userId นี้ไปเช็ก consent ต่อไป
     if (userId.length) {
-      if (!authenData.CONTROLKEY) {
-        await loginNavakij()
-      }
-      //  ถ้าได้ค่า CONTROLKEY ซึ่งมาจาก API login แล้ว แต่ยังไม่รู้ว่า Consent หรือยัง (null) ให้ไปเช็ก checkIsConsent()
-      if (authenData.CONTROLKEY && isConsent === null) {
+      await loginNavakij()
+
+      // เมื่อยังไม่รู้ว่า Consent หรือยัง (isConsent === null) ให้ไปเช็ก checkIsConsent()
+      if (isConsent === null) {
         await checkIsConsent()
       }
 
-      // ถ้า Consent แล้ว ไปหน้า /verify-identity ถ้าไม่ ให้ไปหน้า /terms-conditions
-      if (isConsent) navigate("/verify-identity")
-      else navigate("/terms-conditions")
+      // ถ้า Consent แล้ว (isConsent === true) ให้เช็กว่า Verify หรือยัง ถ้า Verify แล้วให้ไปหน้า /policy ถ้าไม่ (isConsent === false) ให้ไปหน้า /terms-conditions
+      if (isConsent) {
+        await checkIsVerify()
+      } else if (isConsent != null && isConsent === false) {
+        navigate("/terms-conditions")
+      }
     }
-  }, [authenData.CONTROLKEY, isConsent, userId.length])
+  }, [isConsent, userId.length])
 
   // LINE LIFF FUNCTIONS
   // Function runLiff จะเป็นการยิง API ไปหา Line เพื่อ initiate ก่อนที่จะข้อใช้ข้อมูลของ Line User
@@ -76,7 +81,6 @@ function App({
     })
     // เมื่อ User login line แล้ว จะเรียกฟังชั่น liff.getProfile() เพื่อดึงข้อมูลของผู้ใช้
     if (liff.isLoggedIn()) {
-      console.log("You already login")
       let getProfile = await liff.getProfile()
       const email = liff.getDecodedIDToken().email
       const userToken = liff.getIDToken()
@@ -87,40 +91,22 @@ function App({
 
       let getOS = liff.getOS()
       setUserOS(getOS)
-    } else {
-      console.log("You not login yet")
-      liff.login()
     }
-  }
-
-  function closeLIFF() {
-    liff.closeWindow()
   }
 
   // API CALL NAVAKIJ FUNCTIONS
   async function loginNavakij() {
-    console.log("loginNavakij")
     try {
-      const res = await axios.post("login/token", {
-        username: "test.call.nauth@navakij.co.th",
-        password: "iydKk8;k,x]vf4yp2565",
-        system: "APICALL",
-        project: "APICALL",
-      })
-      setAuthenData(res.data)
+      const res = await axios.post(apiPath.AUTHEN_PATH)
     } catch (err) {
       return Promise.reject(err)
     }
   }
 
   async function checkIsConsent() {
-    console.log("checkIsConsent")
     try {
-      const { data } = await axios.get("/consent/checkisconsent", {
+      const { data } = await axios.get(apiPath.CHECK_IS_CONSENT_PATH, {
         params: {
-          masterConsentCode: "MC-LINEOA-001",
-          system: "LINEOA",
-          project: "LINEOA",
           identityKey: userId || "",
         },
       })
@@ -128,6 +114,23 @@ function App({
     } catch (err) {
       console.error(err)
     }
+  }
+
+  async function checkIsVerify() {
+    try {
+      const { data } = await axios.post(apiPath.POLICY_LIST_PATH, {
+        identityKey: userId || "",
+      })
+      if (data.msgCode === "SUCCESS") {
+        navigate("/policy")
+      } else navigate("/terms-conditions")
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  function closeWindow() {
+    liff.closeWindow()
   }
 
   return (
@@ -138,14 +141,14 @@ function App({
           path="/terms-conditions"
           element={
             <TermsAndCondition
-              authenData={authenData}
               isConsent={isConsent}
-              closeLIFF={closeLIFF}
               userId={userId}
               userOS={userOS}
               pictureUrl={pictureUrl}
               userEmail={userEmail}
               userToken={userToken}
+              apiPath={apiPath}
+              appendData={appendData}
             />
           }
         />
@@ -157,6 +160,7 @@ function App({
               birthDateStore={birthDateStore}
               appendData={appendData}
               userId={userId}
+              apiPath={apiPath}
             />
           }
         />
@@ -171,6 +175,7 @@ function App({
               appendData={appendData}
               policyTypeCodeToName={policyTypeCodeToName}
               userId={userId}
+              apiPath={apiPath}
             />
           }
         />
@@ -185,7 +190,12 @@ function App({
             />
           }
         />
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <Home isBackToHome={isBackToHome} closeWindow={closeWindow} />
+          }
+        />
       </Routes>
     </div>
   )
@@ -197,6 +207,8 @@ const mapStateToProps = (state) => ({
   birthDateStore: state.birthDateStore,
   policyDataListStore: state.policyDataListStore,
   policyStatusCodeToName: state.policyStatusCodeToName,
+  apiPath: state.apiPath,
+  isBackToHome: state.isBackToHome,
 })
 
 const mapDispatchToProps = {

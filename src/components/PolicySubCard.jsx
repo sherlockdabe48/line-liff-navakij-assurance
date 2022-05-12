@@ -87,41 +87,6 @@ export default function PolicySubCard({
         </div>
       )}
 
-      {policyData.pol_type === "AH" && (
-        <div className="label-wrapper">
-          <div className="flex">
-            <div className="label">ประเภท</div>
-            <div className="value">
-              ประกัน{policyTypeCodeToName[policyData.pol_type]}
-            </div>
-          </div>
-          <div className="flex">
-            <div className="label">ชื่อผู้เอาประกัน</div>
-            <div className="value">
-              {policyData.cust_first_name} {policyData.cust_last_name}
-            </div>
-          </div>
-          <div className="flex">
-            <div className="label">ผลิตภัณฑ์</div>
-            <div className="value">{policyData?.pol_sub_type}</div>
-          </div>
-          <div className="flex">
-            <div className="label">เลขกรมธรรม์</div>
-            <div className="value">{policyData.pol_id}</div>
-          </div>
-          <div className="flex">
-            <div className="label">เริ่มต้นวันที่</div>
-            <div className="value">
-              {policyData.pol_start_date.split(" ")[0]}
-            </div>
-          </div>
-          <div className="flex">
-            <div className="label">สิ้นสุดวันที่</div>
-            <div className="value">{policyData.pol_end_date.split(" ")[0]}</div>
-          </div>
-        </div>
-      )}
-
       <div className="next-button-wrapper">
         <img src="../next-icon.png" alt="next" />
       </div>

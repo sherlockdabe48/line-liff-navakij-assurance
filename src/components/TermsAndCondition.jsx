@@ -6,13 +6,13 @@ import publicIp from "public-ip"
 import { MinimalSpinner } from "loading-animations-react"
 
 export default function TermsAndCondition({
-  authenData,
-  closeLIFF,
+  apiPath,
   userId,
   userOS,
   pictureUrl,
   userEmail,
   userToken,
+  appendData,
 }) {
   // STATES
   const [termsConditionsHTML, setTermsConditionsHTML] = useState("")
@@ -26,7 +26,7 @@ export default function TermsAndCondition({
 
   // เมื่อเข้า Component นี้แล้วจะ get term and conditions จาก API
   useEffect(async () => {
-    if (authenData.CONTROLKEY && !termsConditionsHTML) {
+    if (!termsConditionsHTML) {
       await getTermsConditions()
     }
     if (termsConditionsHTML && isLoading) {
@@ -34,6 +34,7 @@ export default function TermsAndCondition({
         setIsLoading(false)
       }, 1000)
     }
+    appendData({ isBackToHome: true })
   }, [termsConditionsHTML])
 
   // ทำการ get user ip ก่อนตั้งแต่เข้ามาเก็บไว้เลย เพราะว่าเดี๋ยวจะนำไปใช้ตอน Post saveconsent
@@ -44,15 +45,8 @@ export default function TermsAndCondition({
 
   // FUNCTIONS
   async function getTermsConditions() {
-    console.log("getTermsConditions")
     try {
-      const { data } = await axios.get(`/consent/getmasterconsent`, {
-        params: {
-          masterConsentCode: "MC-LINEOA-001",
-          system: "LINEOA",
-          project: "LINEOA",
-        },
-      })
+      const { data } = await axios.get(apiPath.GET_MASTER_CONSENT_PATH)
       setTermsConditionsHTML(data?.masterConsent?.consentBodyHtmlText)
       if (termsConditionsHTML && isLoading) {
         setTimeout(() => {
@@ -69,17 +63,7 @@ export default function TermsAndCondition({
   async function submitSaveConsent() {
     setIsLoadingSmall(true)
     try {
-      const { data } = await axios.post("/consent/saveconsentinfo", {
-        system: "LINEOA",
-        project: "LINEOA",
-        channel: "LINE",
-        masterConsentCode: "MC-LINEOA-001",
-        masterConsentVersion: 1,
-        consentHeaderHtmlText: "",
-        consentBodyHtmlText: "",
-        consentFooterHtmlText: "",
-        consentFullHtmlText: "",
-        identityKeyType: "LINE_ID",
+      const { data } = await axios.post(apiPath.SAVE_CONSENT_INFO_PATH, {
         identityKey: userId || "",
         userLineOpenIdToken: userToken || "",
         isAccept: true,
@@ -131,7 +115,11 @@ export default function TermsAndCondition({
                 name="accept-terms-conditions"
                 onChange={() => handleToggleInput()}
               />
-              <span className="input-label">
+              <span
+                className={`input-label ${
+                  !isCheckedInput ? "input-label-not-checked" : ""
+                }`}
+              >
                 ข้าพเจ้ายอมรับข้อกำหนดและเงื่อนไขการให้บริการนี้
                 กรณีไม่ยอมรับจะไม่สามารถเข้าตรวจสอบข้อมูลได้
               </span>
@@ -145,9 +133,6 @@ export default function TermsAndCondition({
                 disabled={!isCheckedInput}
               >
                 ยอมรับ
-              </button>
-              <button className="btn btn-cancel" onClick={() => closeLIFF()}>
-                ไม่ยอมรับ
               </button>
             </div>
           </div>

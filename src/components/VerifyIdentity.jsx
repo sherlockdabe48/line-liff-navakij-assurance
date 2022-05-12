@@ -2,19 +2,16 @@ import axios from "axios"
 import React, { useEffect, useState } from "react"
 import OTPConfirmPopup from "./OTPConfirmPopup.jsx"
 import { useNavigate } from "react-router-dom"
-import { Event } from "@material-ui/icons"
 import { MinimalSpinner } from "loading-animations-react"
 
 export default function VerifyIdentity({
-  lineId,
-  userInfo,
   birthDateStore,
   appendData,
   userId,
+  apiPath,
 }) {
   // STATES
 
-  const [isFormValid, setIsFormValid] = useState(false)
   const [idPassport, setIdPassport] = useState("")
   const [birthDate, setBirthDate] = useState("")
   const [phoneNumber, setPhoneNumber] = useState("")
@@ -22,6 +19,7 @@ export default function VerifyIdentity({
   const [showOtpPopup, setShowOtpPopup] = useState(false)
   const [otpRefData, setOtpRefData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isOtpConfirmError, setIsOtpConfirmError] = useState(false)
 
   // HOOKS
   const navigate = useNavigate()
@@ -50,22 +48,20 @@ export default function VerifyIdentity({
     if (checkIsFormValid()) {
       setIsLoading(true)
       try {
-        const { data } = await axios.post("/api/customer/identifying", {
-          system: "LINEOA",
-          project: "LINEOA",
-          channel: "LINE",
-          masterConsentCode: "MC-LINEOA-001",
-          identityType: "LINE_ID",
+        const { data } = await axios.post(apiPath.CUSTOMER_IDENTIFY_PATH, {
           identityKey: userId || "",
           identityValue: idPassport,
-          dateOfBirthString: birthDate.split("-").reverse().join("-"),
+          dateOfBirthString: birthDate,
           dateTime: new Date(),
         })
 
         if (data.msgCode === "VALID") {
           submitOTPRequest()
           setIsLoading(false)
-        } else if (data.msgCode === "INVALID") {
+        } else if (
+          data.msgCode === "INVALID" ||
+          data.msgCode === "SYSTEM_ERROR"
+        ) {
           navigate("/verify-identity/no-user")
         }
       } catch (err) {
@@ -74,21 +70,15 @@ export default function VerifyIdentity({
       }
     } else {
       setIsLoading(false)
-      console.log("Form is not valid")
     }
   }
 
   async function submitOTPRequest() {
     setIsLoading(true)
     try {
-      const { data } = await axios.post("/api/customer/otp/request", {
-        system: "LINEOA",
-        project: "LINEOA",
-        channel: "LINE",
-        masterConsentCode: "MC-LINEOA-001",
-        identityType: "LINE_ID",
+      const { data } = await axios.post(apiPath.OTP_REQUEST_PATH, {
         identityValue: idPassport,
-        dateOfBirthString: birthDate.split("-").reverse().join("-"),
+        dateOfBirthString: birthDate,
         identityKey: userId || "",
         mobileNo: phoneNumber,
         dateTime: new Date(),
@@ -104,7 +94,7 @@ export default function VerifyIdentity({
         setIsLoading(false)
       }
       appendData({
-        birthDateStore: birthDate.split("-").reverse().join("-"),
+        birthDateStore: birthDate,
       })
     } catch (err) {
       setIsLoading(false)
@@ -116,10 +106,7 @@ export default function VerifyIdentity({
     if (otpString.length === 6) {
       setIsLoading(true)
       try {
-        const { data } = await axios.post("/api/customer/otp/confirm", {
-          system: "LINEOA",
-          project: "LINEOA",
-          channel: "LINE",
+        const { data } = await axios.post(apiPath.OTP_CONFIRM_PATH, {
           identityKey: userId || "",
           mobileNo: phoneNumber,
           optRef: otpRefData.optRef,
@@ -129,6 +116,10 @@ export default function VerifyIdentity({
         if (data.msgCode === "SUCCESS") {
           handleCloseOtpPopup()
           navigate("/policy")
+          setIsOtpConfirmError(false)
+          setIsLoading(false)
+        } else if (data.msgCode === "FAILED") {
+          setIsOtpConfirmError(true)
           setIsLoading(false)
         }
         return Promise.resolve()
@@ -144,7 +135,8 @@ export default function VerifyIdentity({
       setIdPassport(e.target.value)
     }
     if (type === "birthDate") {
-      setBirthDate(e.target.value)
+      let birthDateBeforeFormat = e.target.value
+      setBirthDate(birthDateBeforeFormat.replaceAll("/", "-"))
     }
     if (type === "phoneNumber") {
       setPhoneNumber(e.target.value)
@@ -153,11 +145,19 @@ export default function VerifyIdentity({
 
   function handleCloseOtpPopup() {
     setShowOtpPopup(false)
+    clearErrorOTPConfirm()
+  }
+
+  function clearErrorOTPConfirm() {
+    setIsOtpConfirmError(false)
   }
 
   function checkIsFormValid() {
     return (
-      idPassport.length === 13 && birthDate.length === 10 && phoneNumber.length
+      idPassport.length === 13 &&
+      birthDate.length === 10 &&
+      phoneNumber.length === 10 &&
+      /([aA-zZ])+/g.test(phoneNumber) === false
     )
   }
 
@@ -189,16 +189,23 @@ export default function VerifyIdentity({
         </div>
         <div className="form-item">
           <label className="form-label" htmlFor="birth-date">
-            วัน/เดือน/ปีเกิด*
+            วัน/เดือน/ปีเกิด(ค.ศ.)*
           </label>
           <input
             className="input-item"
-            type="date"
             name="birth-date"
-            value={birthDate}
+            placeholder="DD/MM/YYYY"
+            pattern="[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]*"
+            size={10}
+            maxlength={10}
             onChange={(e) => handleChange(e, "birthDate")}
+            onKeyUp={(e) => {
+              e.target.value = e.target.value
+                .replace(/^(\d\d)(\d)$/g, "$1/$2")
+                .replace(/^(\d\d\/\d\d)(\d+)$/g, "$1/$2")
+                .replace(/[^\d\/]/g, "")
+            }}
           />
-          <Event className="calendar-icon" />
         </div>
         <div className="form-item">
           <label className="form-label" htmlFor="phone-number">
@@ -209,26 +216,30 @@ export default function VerifyIdentity({
             type="text"
             pattern="\d*"
             name="phone-number"
+            placeholder="0xxxxxxxxxx"
+            size={10}
+            maxlength={10}
             value={phoneNumber}
             onChange={(e) => handleChange(e, "phoneNumber")}
+            onKeyUp={(e) => {
+              e.target.value = e.target.value.replace(/\D/g, "")
+            }}
           />
+          {/([aA-zZ])+/g.test(phoneNumber) ? (
+            <span className="warning-label">กรุณาระบุตัวเลขเท่านั้น</span>
+          ) : (
+            ""
+          )}
         </div>
         <button
           className={`btn btn-primary verify-button ${
-            phoneNumber && birthDate && idPassport ? "" : "btn-disabled"
+            checkIsFormValid() ? "" : "btn-disabled"
           }`}
           type="submit"
-          disabled={!phoneNumber || !birthDate || !idPassport}
+          disabled={!checkIsFormValid()}
         >
           ตรวจสอบ
         </button>
-        {/* <button
-          onClick={() => {
-            setShowOtpPopup(true)
-          }}
-        >
-          OpenPopup
-        </button> */}
       </form>
       {showOtpPopup && (
         <OTPConfirmPopup
@@ -237,6 +248,8 @@ export default function VerifyIdentity({
           handleCloseOtpPopup={handleCloseOtpPopup}
           submitConfirmOTP={submitConfirmOTP}
           submitOTPRequest={submitOTPRequest}
+          isOtpConfirmError={isOtpConfirmError}
+          clearErrorOTPConfirm={clearErrorOTPConfirm}
         />
       )}
     </div>

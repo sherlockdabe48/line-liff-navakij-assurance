@@ -40,6 +40,10 @@
         font-size: 14px;
         font-weight: bold;
       }
+      
+      .input-label-not-checked {
+        color: var(--text-grey) !important;
+      }
     }
   
     .button-wrapper {
@@ -48,7 +52,7 @@
       margin-top: 10px;
   
       button {
-        width: 136px;
+        width: 100%;
         height: 43px;
         border: none;
         border-radius: 5px;
